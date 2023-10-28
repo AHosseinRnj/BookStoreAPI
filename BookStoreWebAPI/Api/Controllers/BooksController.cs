@@ -2,6 +2,7 @@
 using Application.Commands.DeleteBook;
 using Application.Commands.UpdateBook;
 using Application.Query.GetBook;
+using Application.Query.GetBooks;
 using log4net;
 using log4net.Config;
 using MediatR;
@@ -35,6 +36,23 @@ namespace Api.Controllers
             catch (Exception ex)
             {
                 _logger.Error("Error adding a book: " + ex.Message, ex);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBooks()
+        {
+            try
+            {
+                _logger.Info("Received a request to get all books");
+                var result = await _sender.Send(new GetBooksQuery());
+                _logger.Info("Books retrieved successfully.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error getting Books: " + ex.Message, ex);
                 return StatusCode(500, "Internal Server Error");
             }
         }

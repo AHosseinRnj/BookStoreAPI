@@ -1,5 +1,6 @@
 ﻿using Application.Commands.UpdateBook;
 using Application.Query.GetBook;
+using Application.Query.GetBooks;
 using Application.Repositpries;
 using Dapper;
 using Domain.Entities;
@@ -36,11 +37,20 @@ namespace Infrastructure.Persistance.Repositories
             await _connection.ExecuteAsync(query, new { id }, _transaction);
         }
 
+        public async Task<IEnumerable<GetBookQueryResponse>> GetBooksAsync()
+        {
+            var query = "SELECT * FROM Book";
+            var listOfBooks = await _connection.QueryAsync<GetBookQueryResponse>(query, null, _transaction);
+
+            return listOfBooks;
+        }
+
+
         public async Task<GetBookQueryResponse> GetBookByIdAsync(int id)
         {
             var query = "SELECT * FROM Book WHERE id=@Id";
             var book = await _connection.QueryFirstAsync<Book>(query, new { id }, _transaction);
-            GetBookQueryResponse result = new GetBookQueryResponse()
+            var result = new GetBookQueryResponse()
             {
                 Title = book.Title,
                 Price = book.Price,
