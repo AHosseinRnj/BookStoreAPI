@@ -1,7 +1,9 @@
 ﻿using Application.Query.Author.GetAuthor;
+using Application.Query.GetBook;
 using Application.Repositpries;
 using Dapper;
 using Domain.Entities;
+using System;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
@@ -53,6 +55,13 @@ namespace Infrastructure.Persistance.Repositories
                 Description = author.Description
             };
             return result;
+        }
+        public async Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id)
+        {
+            var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Book JOIN Author ON Book.AuthorId = Author.Id WHERE Author.Id = @AutId";
+            var listOfBooks = await _connection.QueryAsync<GetBookQueryResponse>(query, new { AutId = id }, _transaction);
+
+            return listOfBooks;
         }
 
         public async Task UpdateAsync(Application.Commands.UpdateAuthor.UpdateAuthorCommand author)
