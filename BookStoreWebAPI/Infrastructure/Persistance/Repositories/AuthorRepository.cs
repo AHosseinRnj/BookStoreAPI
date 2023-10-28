@@ -34,6 +34,14 @@ namespace Infrastructure.Persistance.Repositories
             await _connection.ExecuteAsync(query, new { id }, _transaction);
         }
 
+        public async Task<IEnumerable<GetAuthorQueryResponse>> GetAuthorsAsync()
+        {
+            var query = "SELECT * FROM Author";
+            var listOfAuthors = await _connection.QueryAsync<GetAuthorQueryResponse>(query, null, _transaction);
+
+            return listOfAuthors;
+        }
+
         public async Task<GetAuthorQueryResponse> GetAuthorById(int id)
         {
             var query = "SELECT * FROM Author WHERE id=@Id";

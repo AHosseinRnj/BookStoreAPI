@@ -2,6 +2,7 @@
 using Application.Commands.DeleteAuthor;
 using Application.Commands.UpdateAuthor;
 using Application.Query.Author.GetAuthor;
+using Application.Query.GetAuthors;
 using log4net;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,23 @@ namespace Api.Controllers
             catch (Exception ex)
             {
                 _logger.Error("Error adding an Author: " + ex.Message, ex);
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAuthors()
+        {
+            try
+            {
+                _logger.Info("Received a request to get Authors");
+                var result = await _sender.Send(new GetAuthorsQuery());
+                _logger.Info("Authors retrieved successfully.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Error getting Authors: " + ex.Message, ex);
                 return StatusCode(500, "Internal Server Error");
             }
         }

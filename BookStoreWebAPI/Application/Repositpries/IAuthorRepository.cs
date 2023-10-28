@@ -7,6 +7,7 @@ namespace Application.Repositpries
     public interface IAuthorRepository
     {
         Task AddAsync(Author author);
+        Task<IEnumerable<GetAuthorQueryResponse>> GetAuthorsAsync();
         Task<GetAuthorQueryResponse> GetAuthorById(int id);
         Task UpdateAsync(UpdateAuthorCommand author);
         Task DeleteByIdAsync(int id);
