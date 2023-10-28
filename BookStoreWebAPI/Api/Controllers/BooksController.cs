@@ -11,16 +11,15 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BooksController : ControllerBase
     {
         private readonly ILog _logger;
         private readonly ISender _sender;
 
-        public BookController(ISender sender)
+        public BooksController(ISender sender)
         {
             _sender = sender;
-            XmlConfigurator.Configure(new FileInfo("log4net.config"));
-            _logger = LogManager.GetLogger(typeof(BookController));
+            _logger = LogManager.GetLogger(typeof(BooksController));
         }
 
         [HttpPost]

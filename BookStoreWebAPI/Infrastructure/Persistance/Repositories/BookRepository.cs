@@ -19,12 +19,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Book book)
         {
-            var query = "INSERT INTO Book (id, title, isbn, price) VALUES (@id, @Title, @ISBN, @Price)";
+            var query = "INSERT INTO Book (id, title, isbn, price, authorId) VALUES (@id, @Title, @ISBN, @Price, @AuthorId)";
             var parameters = new DynamicParameters();
             parameters.Add("id", book.Id, DbType.Int32);
             parameters.Add("Title", book.Title, DbType.String);
             parameters.Add("ISBN", book.ISBN, DbType.String);
             parameters.Add("Price", book.Price, DbType.Double);
+            parameters.Add("AuthorId", book.AuthorId, DbType.Int32);
 
             await _connection.ExecuteAsync(query, parameters, _transaction);
         }
@@ -50,12 +51,14 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(UpdateBookCommand book)
         {
-            var query = "UPDATE Book SET title=@Title, isbn = @ISBN, price=@Price WHERE Id=@Id";
+            var query = "UPDATE Book SET title=@Title, isbn = @ISBN, price=@Price, authorid=@AuthorId WHERE Id=@Id";
             var parameters = new DynamicParameters();
             parameters.Add("Id", book.id, DbType.Int32);
             parameters.Add("Title", book.Title, DbType.String);
             parameters.Add("ISBN", book.ISBN, DbType.String);
             parameters.Add("Price", book.price, DbType.Double);
+            parameters.Add("AuthorId", book.AuthorId, DbType.Int32);
+
             await _connection.ExecuteAsync(query, parameters, _transaction);
         }
     }

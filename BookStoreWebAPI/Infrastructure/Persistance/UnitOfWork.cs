@@ -11,6 +11,7 @@ namespace Infrastructure.Persistance
         private readonly DapperContext _dapperContext;
         private readonly IDbConnection _connection;
         private IBookRepository _BookRepository { get; set; }
+        private IAuthorRepository _AuthorRepository { get; set; }
         public UnitOfWork(DapperContext dapperContext)
         {
             _dapperContext = dapperContext;
@@ -21,6 +22,7 @@ namespace Infrastructure.Persistance
         }
 
         public IBookRepository BookRepository { get { return _BookRepository ?? (_BookRepository = new BookRepository(_transaction)); } }
+        public IAuthorRepository AuthorRepository { get { return _AuthorRepository ?? (_AuthorRepository = new AuthorRepository(_transaction)); } }
 
         public void Commit()
         {
@@ -40,6 +42,7 @@ namespace Infrastructure.Persistance
                 resetRepositories();
             }
         }
+
         private void resetRepositories()
         {
             _BookRepository = null;

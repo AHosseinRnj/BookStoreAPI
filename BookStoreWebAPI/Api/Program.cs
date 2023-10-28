@@ -1,6 +1,7 @@
 using Application;
 using Application.Repositpries;
 using Infrastructure.Persistance;
+using log4net.Config;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Net;
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddLog4Net();
+XmlConfigurator.Configure(new FileInfo("log4net.config"));
+
 // Add services to the container.
 builder.Services.AddMediatR(typeof(MediatRStarter).Assembly);
 builder.Services.AddSingleton<DapperContext>();

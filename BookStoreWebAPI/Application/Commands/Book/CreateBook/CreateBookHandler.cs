@@ -21,6 +21,7 @@ namespace Application.Commands.CreateBook
                 Title = request.Title,
                 ISBN = request.ISBN,
                 Price = request.Price,
+                AuthorId = request.AuthorId,
             };
 
             await _unitOfWork.BookRepository.AddAsync(book);
