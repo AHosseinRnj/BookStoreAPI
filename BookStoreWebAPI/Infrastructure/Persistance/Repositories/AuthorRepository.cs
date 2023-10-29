@@ -1,4 +1,5 @@
-﻿using Application.Query.Author.GetAuthor;
+﻿using Application.Commands.UpdateAuthor;
+using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositpries;
 using Dapper;
@@ -64,7 +65,7 @@ namespace Infrastructure.Persistance.Repositories
             return listOfBooks;
         }
 
-        public async Task UpdateAsync(Application.Commands.UpdateAuthor.UpdateAuthorCommand author)
+        public async Task UpdateAsync(UpdateAuthorCommand author)
         {
             var query = "UPDATE Author SET firstname=@FirstName, lastname = @LastName, description=@Description WHERE Id=@Id";
             var parameters = new DynamicParameters();
