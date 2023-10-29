@@ -15,15 +15,7 @@ namespace Application.Commands.CreateAuthor
 
         public async Task<Unit> Handle(CreateAuthorCommand request, CancellationToken cancellationToken)
         {
-            var author = new Author()
-            {
-                Id = request.Id,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Description = request.Description,
-            };
-
-            await _unitOfWork.AuthorRepository.AddAsync(author);
+            await _unitOfWork.AuthorRepository.AddAsync(request);
             _unitOfWork.Commit();
 
             return Unit.Value;

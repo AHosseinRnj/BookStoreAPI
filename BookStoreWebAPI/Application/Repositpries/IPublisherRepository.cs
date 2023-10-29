@@ -2,7 +2,6 @@
 using Application.Commands.UpdatePublisher;
 using Application.Query.GetBook;
 using Application.Query.GetPublisher;
-using Domain.Entities;
 
 namespace Application.Repositpries
 {

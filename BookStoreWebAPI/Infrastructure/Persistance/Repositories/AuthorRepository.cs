@@ -1,4 +1,5 @@
-﻿using Application.Commands.UpdateAuthor;
+﻿using Application.Commands.CreateAuthor;
+using Application.Commands.UpdateAuthor;
 using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositpries;
@@ -19,7 +20,7 @@ namespace Infrastructure.Persistance.Repositories
             _connection = _transaction.Connection;
         }
 
-        public async Task AddAsync(Author author)
+        public async Task AddAsync(CreateAuthorCommand author)
         {
             var query = "INSERT INTO Author (Id, FirstName, LastName, Description) VALUES (@Id, @FirstName, @LastName, @Description)";
 
