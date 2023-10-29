@@ -21,9 +21,10 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Author author)
         {
-            var query = "INSERT INTO Author (id, firstname, lastname, description) VALUES (@id, @FirstName, @LastName, @Description)";
+            var query = "INSERT INTO Author (Id, FirstName, LastName, Description) VALUES (@Id, @FirstName, @LastName, @Description)";
+
             var parameters = new DynamicParameters();
-            parameters.Add("id", author.Id, DbType.Int32);
+            parameters.Add("Id", author.Id, DbType.Int32);
             parameters.Add("FirstName", author.FirstName, DbType.String);
             parameters.Add("LastName", author.LastName, DbType.String);
             parameters.Add("Description", author.Description, DbType.String);
@@ -33,7 +34,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM Author WHERE id=@Id";
+            var query = "DELETE FROM Author WHERE id = @Id";
             await _connection.ExecuteAsync(query, new { id }, _transaction);
         }
 
@@ -47,15 +48,10 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<GetAuthorQueryResponse> GetAuthorById(int id)
         {
-            var query = "SELECT * FROM Author WHERE id=@Id";
-            var author = await _connection.QueryFirstAsync<Author>(query, new { id }, _transaction);
-            var result = new GetAuthorQueryResponse()
-            {
-                FirstName = author.FirstName,
-                LastName = author.LastName,
-                Description = author.Description
-            };
-            return result;
+            var query = "SELECT * FROM Author WHERE id = @Id";
+            var author = await _connection.QueryFirstAsync<GetAuthorQueryResponse>(query, new { id }, _transaction);
+
+            return author;
         }
         public async Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id)
         {
@@ -67,7 +63,8 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(UpdateAuthorCommand author)
         {
-            var query = "UPDATE Author SET firstname=@FirstName, lastname = @LastName, description=@Description WHERE Id=@Id";
+            var query = "UPDATE Author SET firstname = @FirstName, lastname = @LastName, description = @Description WHERE Id=@Id";
+
             var parameters = new DynamicParameters();
             parameters.Add("id", author.id, DbType.Int32);
             parameters.Add("FirstName", author.FirstName, DbType.String);
