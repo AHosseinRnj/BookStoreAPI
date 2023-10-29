@@ -8,7 +8,7 @@ namespace Application.Commands.DeleteCategory
         private IUnitOfWork _unitOfWork;
         public DeleteCategoryHandler(IUnitOfWork unitOfWork)
         {
-            unitOfWork = _unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
