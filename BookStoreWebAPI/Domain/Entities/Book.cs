@@ -9,5 +9,6 @@
 
         public int AuthorId { get; set; }
         public int PublisherId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
