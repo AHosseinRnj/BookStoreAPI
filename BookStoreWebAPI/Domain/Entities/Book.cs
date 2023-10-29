@@ -8,5 +8,6 @@
         public double Price { get; set; }
 
         public int AuthorId { get; set; }
+        public int PublisherId { get; set; }
     }
 }
