@@ -4,7 +4,6 @@ using Application.Commands.UpdateBook;
 using Application.Query.GetBook;
 using Application.Query.GetBooks;
 using log4net;
-using log4net.Config;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

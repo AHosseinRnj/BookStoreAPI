@@ -1,9 +1,6 @@
 ﻿using Application.Commands.CreatePublisher;
-using Application.Commands.DeleteAuthor;
 using Application.Commands.DeletePublisher;
-using Application.Commands.UpdateAuthor;
 using Application.Commands.UpdatePublisher;
-using Application.Query.GetAuthorBooks;
 using Application.Query.GetPublisher;
 using Application.Query.GetPublisherBooks;
 using Application.Query.GetPublishers;
