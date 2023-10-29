@@ -15,16 +15,7 @@ namespace Application.Commands.CreateBook
 
         public async Task<Unit> Handle(CreateBookCommand request, CancellationToken cancellationToken)
         {
-            Book book = new Book()
-            {
-                Id = request.Id,
-                Title = request.Title,
-                ISBN = request.ISBN,
-                Price = request.Price,
-                AuthorId = request.AuthorId,
-            };
-
-            await _unitOfWork.BookRepository.AddAsync(book);
+            await _unitOfWork.BookRepository.AddAsync(request);
             _unitOfWork.Commit();
 
             return Unit.Value;

@@ -1,9 +1,8 @@
-﻿using Application.Commands.UpdateBook;
+﻿using Application.Commands.CreateBook;
+using Application.Commands.UpdateBook;
 using Application.Query.GetBook;
-using Application.Query.GetBooks;
 using Application.Repositpries;
 using Dapper;
-using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
@@ -18,7 +17,7 @@ namespace Infrastructure.Persistance.Repositories
             _connection = _transaction.Connection;
         }
 
-        public async Task AddAsync(Book book)
+        public async Task AddAsync(CreateBookCommand book)
         {
             var query = "INSERT INTO Book (Id, Title, ISBN, Price, AuthorId, PublisherId) VALUES (@Id, @Title, @ISBN, @Price, @AuthorId, @PublisherId)";
 
