@@ -19,7 +19,7 @@ namespace Api.Controllers
         public CategorisController(ISender sender)
         {
             _sender = sender;
-            _logger = LogManager.GetLogger(typeof(PublishersController));
+            _logger = LogManager.GetLogger(typeof(CategorisController));
         }
 
         [HttpPost]

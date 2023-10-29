@@ -59,8 +59,8 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(UpdateBookCommand book)
         {
-            var query = "UPDATE Book SET Title = @Title, ISBN = @ISBN, Price = @Price, AuthorId = @AuthorId, PublisherId = @PublisherId" +
-                                                "CategoryId = @CategoryId WHERE Id = @Id";
+            var query = "UPDATE Book SET Title = @Title, ISBN = @ISBN, Price = @Price, AuthorId = @AuthorId, PublisherId = @PublisherId," +
+                                                " CategoryId = @CategoryId WHERE Id = @Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", book.id, DbType.Int32);
