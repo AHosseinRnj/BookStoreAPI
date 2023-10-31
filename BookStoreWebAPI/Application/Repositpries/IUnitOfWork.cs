@@ -7,6 +7,7 @@
         IPublisherRepository PublisherRepository { get; }
         ICategoryRepository CategoryRepository { get; }
         IUserRepository UserRepository { get; }
+        IOrderRepository OrderRepository { get; }
 
         void Commit();
     }

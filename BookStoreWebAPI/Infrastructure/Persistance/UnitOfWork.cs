@@ -18,11 +18,13 @@ namespace Infrastructure.Persistance
             _connection.Open();
             _transaction = _connection.BeginTransaction();
         }
+
         private IBookRepository _BookRepository { get; set; }
         private IAuthorRepository _AuthorRepository { get; set; }
         private IPublisherRepository _PublisherRepository { get; set; }
         private ICategoryRepository _CategoryRepository { get; set; }
         private IUserRepository _UserRepository { get; set; }
+        private IOrderRepository _OrderRepository { get; set; }
 
         public IBookRepository BookRepository
         {
@@ -61,6 +63,14 @@ namespace Infrastructure.Persistance
             get
             {
                 return _UserRepository ?? (_UserRepository = new UserRepository(_transaction));
+            }
+        }
+
+        public IOrderRepository OrderRepository
+        {
+            get
+            {
+                return _OrderRepository ?? (_OrderRepository = new OrderRepository(_transaction));
             }
         }
 
