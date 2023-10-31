@@ -24,7 +24,7 @@ namespace Infrastructure.Persistance.Repositories
             var query = "INSERT INTO [dbo].[User] (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("Id", user.id, DbType.UInt32);
+            parameters.Add("Id", user.id, DbType.Int32);
             parameters.Add("FirstName", user.firstName, DbType.String);
             parameters.Add("LastName", user.lastName, DbType.String);
             parameters.Add("Address", user.Address, DbType.String);
@@ -60,7 +60,7 @@ namespace Infrastructure.Persistance.Repositories
             var query = "UPDATE [dbo].[User] SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
 
             var parameters = new DynamicParameters();
-            parameters.Add("Id", request.id, DbType.UInt32);
+            parameters.Add("Id", request.id, DbType.Int32);
             parameters.Add("FirstName", request.user.FirstName, DbType.String);
             parameters.Add("LastName", request.user.LastName, DbType.String);
             parameters.Add("Address", request.user.Address, DbType.String);
