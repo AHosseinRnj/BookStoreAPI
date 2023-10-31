@@ -25,6 +25,7 @@ namespace Infrastructure.Persistance
         private ICategoryRepository _CategoryRepository { get; set; }
         private IUserRepository _UserRepository { get; set; }
         private IOrderRepository _OrderRepository { get; set; }
+        private IOrderBookRepository _OrderBookRepository { get; set; }
 
         public IBookRepository BookRepository
         {
@@ -71,6 +72,14 @@ namespace Infrastructure.Persistance
             get
             {
                 return _OrderRepository ?? (_OrderRepository = new OrderRepository(_transaction));
+            }
+        }
+
+        public IOrderBookRepository OrderBookRepository
+        {
+            get
+            {
+                return _OrderBookRepository ?? (_OrderBookRepository = new OrderBookRepository(_transaction));
             }
         }
 

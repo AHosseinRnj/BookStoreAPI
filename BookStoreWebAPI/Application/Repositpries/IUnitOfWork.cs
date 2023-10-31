@@ -8,6 +8,7 @@
         ICategoryRepository CategoryRepository { get; }
         IUserRepository UserRepository { get; }
         IOrderRepository OrderRepository { get; }
+        IOrderBookRepository OrderBookRepository { get; }
 
         void Commit();
     }
