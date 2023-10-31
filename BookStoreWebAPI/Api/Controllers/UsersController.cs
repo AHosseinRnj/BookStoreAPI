@@ -1,14 +1,11 @@
 ﻿using Application.Commands.CreateBook;
-using Application.Commands.DeleteBook;
+using Application.Commands.CreateUser;
 using Application.Commands.DeleteUser;
-using Application.Commands.UpdateBook;
 using Application.Commands.UpdateUser;
-using Application.Query.GetBook;
-using Application.Query.GetBooks;
+using Application.Query.GetUser;
 using Application.Query.GetUsers;
 using log4net;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -23,11 +20,11 @@ namespace Api.Controllers
         public UsersController(ISender sender)
         {
             _sender = sender;
-            _logger = LogManager.GetLogger(typeof(BooksController));
+            _logger = LogManager.GetLogger(typeof(UsersController));
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser(CreateBookCommand request)
+        public async Task<IActionResult> AddUser(CreateUserCommand request)
         {
             try
             {
@@ -66,7 +63,7 @@ namespace Api.Controllers
             try
             {
                 _logger.Info("Received a request to get a User by ID: " + id);
-                var result = await _sender.Send(new GetBookQuery(id));
+                var result = await _sender.Send(new GetUserQuery(id));
                 _logger.Info("User retrieved successfully.");
                 return Ok(result);
             }
@@ -83,7 +80,7 @@ namespace Api.Controllers
             try
             {
                 _logger.Info("Received a request to update a User.");
-                await _sender.Send((id, request));
+                await _sender.Send(new UpdateUserCommand(id, request));
                 _logger.Info("User updated successfully.");
                 return Ok();
             }
