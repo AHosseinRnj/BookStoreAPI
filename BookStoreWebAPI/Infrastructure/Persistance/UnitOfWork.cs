@@ -23,10 +23,37 @@ namespace Infrastructure.Persistance
         private IPublisherRepository _PublisherRepository { get; set; }
         private ICategoryRepository _CategoryRepository { get; set; }
 
-        public IBookRepository BookRepository { get { return _BookRepository ?? (_BookRepository = new BookRepository(_transaction)); } }
-        public IAuthorRepository AuthorRepository { get { return _AuthorRepository ?? (_AuthorRepository = new AuthorRepository(_transaction)); } }
-        public IPublisherRepository PublisherRepository { get { return _PublisherRepository ?? (_PublisherRepository = new PublisherRepository(_transaction)); } }
-        public ICategoryRepository CategoryRepository { get { return _CategoryRepository ?? (_CategoryRepository = new CategoryRepository(_transaction)); } }
+        public IBookRepository BookRepository
+        {
+            get
+            {
+                return _BookRepository ?? (_BookRepository = new BookRepository(_transaction));
+            }
+        }
+
+        public IAuthorRepository AuthorRepository
+        {
+            get
+            {
+                return _AuthorRepository ?? (_AuthorRepository = new AuthorRepository(_transaction));
+            }
+        }
+
+        public IPublisherRepository PublisherRepository
+        {
+            get
+            {
+                return _PublisherRepository ?? (_PublisherRepository = new PublisherRepository(_transaction));
+            }
+        }
+
+        public ICategoryRepository CategoryRepository
+        {
+            get
+            {
+                return _CategoryRepository ?? (_CategoryRepository = new CategoryRepository(_transaction));
+            }
+        }
 
         public void Commit()
         {
