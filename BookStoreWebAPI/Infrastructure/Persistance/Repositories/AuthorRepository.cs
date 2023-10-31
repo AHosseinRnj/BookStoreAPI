@@ -4,8 +4,6 @@ using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositpries;
 using Dapper;
-using Domain.Entities;
-using System;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
