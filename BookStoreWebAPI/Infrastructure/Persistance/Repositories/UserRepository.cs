@@ -21,7 +21,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(CreateUserCommand user)
         {
-            var query = "INSERT INTO User (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
+            var query = "INSERT INTO [dbo].[User] (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", user.id, DbType.UInt32);
@@ -35,13 +35,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM User WHERE id = @Id";
+            var query = "DELETE FROM [dbo].[User] WHERE id = @Id";
             await _connection.ExecuteAsync(query, new { id }, _transaction);
         }
 
         public async Task<GetUserQueryResponse> GetUserByIdAsync(int id)
         {
-            var query = "SELECT * FROM User WHERE id = @Id";
+            var query = "SELECT * FROM [dbo].[User] WHERE id = @Id";
             var user = await _connection.QueryFirstAsync<GetUserQueryResponse>(query, new { id }, _transaction);
 
             return user;
@@ -49,7 +49,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync()
         {
-            var query = "SELECT * FROM User";
+            var query = "SELECT * FROM [dbo].[User]";
             var listOfUsers = await _connection.QueryAsync<GetUserQueryResponse>(query, null, _transaction);
 
             return listOfUsers;
@@ -57,7 +57,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(UpdateUserCommand request)
         {
-            var query = "UPDATE User SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
+            var query = "UPDATE [dbo].[User] SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", request.id, DbType.UInt32);
