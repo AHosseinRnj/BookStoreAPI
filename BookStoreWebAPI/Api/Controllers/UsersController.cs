@@ -2,6 +2,7 @@
 using Application.Commands.DeleteUser;
 using Application.Commands.UpdateUser;
 using Application.Query.GetUser;
+using Application.Query.GetUserOrders;
 using Application.Query.GetUsers;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,17 @@ namespace Api.Controllers
         public async Task<IActionResult> GetUserById(int id)
         {
             var result = await _sender.Send(new GetUserQuery(id));
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
+
+        [HttpGet("{id}/Orders", Name = "GetUserOrders")]
+        public async Task<IActionResult> GetUserOrders(int id)
+        {
+            var result = await _sender.Send(new GetUserOrdersQuery(id));
 
             if (result == null)
                 return NotFound();

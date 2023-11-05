@@ -2,6 +2,7 @@
 using Application.Commands.UpdateUser;
 using Application.Query.Author.GetAuthor;
 using Application.Query.GetUser;
+using Application.Query.GetUserOrders;
 using Application.Repositpries;
 using Dapper;
 using Domain.Entities;
@@ -45,6 +46,19 @@ namespace Infrastructure.Persistance.Repositories
             var user = await _connection.QueryFirstAsync<GetUserQueryResponse>(query, new { id }, _transaction);
 
             return user;
+        }
+
+        public async Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id)
+        {
+            var query = "SELECT B.Title, OB.Quantity, OB.Price, (OB.Quantity * OB.Price) AS TotalPrice " +
+                        "FROM [Order] O " +
+                        "JOIN OrderBook OB ON O.Id = OB.OrderId " +
+                        "JOIN Book B ON OB.BookId = B.Id " +
+                        "WHERE O.UserId = @id " +
+                        "ORDER BY B.Title";
+            var listOfOrders = await _connection.QueryAsync<GetUserOrdersQueryResponse>(query, new { id }, _transaction);
+
+            return listOfOrders;
         }
 
         public async Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync()
