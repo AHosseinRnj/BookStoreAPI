@@ -6,17 +6,14 @@ namespace Infrastructure.Persistance
 {
     public class DapperContext
     {
+        public IDbConnection Connection { get; }
+        public IDbTransaction Transaction { get; set; }
         private readonly IConfiguration _configuration;
-        private readonly string? _connectionString;
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("Default");
-        }
-
-        public IDbConnection CreateConnection()
-        {
-            return new SqlConnection(_connectionString);
+            Connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+            Connection.Open();
         }
     }
 }

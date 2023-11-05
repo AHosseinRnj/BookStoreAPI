@@ -8,9 +8,11 @@ namespace Application.Commands.CreatePublisher
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public CreatePublisherHandler(IUnitOfWork unitOfWork)
+        private readonly IPublisherRepository _publisherRepository;
+        public CreatePublisherHandler(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
         {
             _unitOfWork = unitOfWork;
+            _publisherRepository = publisherRepository;
             _logger = LogManager.GetLogger(typeof(CreatePublisherHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.CreatePublisher
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add a Publisher.");
-                await _unitOfWork.PublisherRepository.AddAsync(request);
+                await _publisherRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding a Publisher: " + ex.Message, ex);
                 throw;
             }

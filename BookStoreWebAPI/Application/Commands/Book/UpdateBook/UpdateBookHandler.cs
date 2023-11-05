@@ -8,9 +8,11 @@ namespace Application.Commands.UpdateBook
     {
         private readonly ILog _logger;
         private readonly IUnitOfWork _uniteOfWork;
-        public UpdateAuthorHandler(IUnitOfWork uniteOfWork)
+        private readonly IBookRepository _bookRepository;
+        public UpdateAuthorHandler(IUnitOfWork uniteOfWork, IBookRepository bookRepository)
         {
             _uniteOfWork = uniteOfWork;
+            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(UpdateAuthorHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.UpdateBook
         {
             try
             {
+                _uniteOfWork.BeginTransaction();
                 _logger.Info("Received a request to update a book.");
-                await _uniteOfWork.BookRepository.UpdateAsync(request);
+                await _bookRepository.UpdateAsync(request);
             }
             catch (Exception ex)
             {
+                _uniteOfWork.Rollback();
                 _logger.Error("Error updating a book: " + ex.Message, ex);
                 throw;
             }

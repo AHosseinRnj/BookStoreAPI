@@ -8,10 +8,11 @@ namespace Application.Query.GetBook
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-
-        public GetBookQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IBookRepository _bookRepository;
+        public GetBookQueryHandler(IUnitOfWork unitOfWork, IBookRepository bookRepository)
         {
             _unitOfWork = unitOfWork;
+            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(GetBookQueryHandler));
         }
 
@@ -21,11 +22,13 @@ namespace Application.Query.GetBook
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get a book by ID: " + request.id);
-                result = await _unitOfWork.BookRepository.GetBookByIdAsync(request.id);
+                result = await _bookRepository.GetBookByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting a book: " + ex.Message, ex);
                 throw;
             }

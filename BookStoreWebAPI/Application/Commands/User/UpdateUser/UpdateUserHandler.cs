@@ -8,9 +8,11 @@ namespace Application.Commands.UpdateUser
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public UpdateUserHandler(IUnitOfWork unitOfWork)
+        private readonly IUserRepository _userRepository;
+        public UpdateUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
             _logger = LogManager.GetLogger(typeof(UpdateUserHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.UpdateUser
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to update a User.");
-                await _unitOfWork.UserRepository.UpdateAsync(request);
+                await _userRepository.UpdateAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error updating a User: " + ex.Message, ex);
                 throw;
             }

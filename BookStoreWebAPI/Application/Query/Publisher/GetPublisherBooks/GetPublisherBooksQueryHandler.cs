@@ -9,9 +9,11 @@ namespace Application.Query.GetPublisherBooks
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetPublisherBooksQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IPublisherRepository _publisherRepository;
+        public GetPublisherBooksQueryHandler(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
         {
             _unitOfWork = unitOfWork;
+            _publisherRepository = publisherRepository;
             _logger = LogManager.GetLogger(typeof(GetPublisherBooksQueryHandler));
         }
 
@@ -21,11 +23,13 @@ namespace Application.Query.GetPublisherBooks
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get a Publisher's Books by ID: " + request.id);
-                result = await _unitOfWork.PublisherRepository.GetPublisherBooksAsync(request.id);
+                result = await _publisherRepository.GetPublisherBooksAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting an Publisher's Books: " + ex.Message, ex);
                 throw;
             }

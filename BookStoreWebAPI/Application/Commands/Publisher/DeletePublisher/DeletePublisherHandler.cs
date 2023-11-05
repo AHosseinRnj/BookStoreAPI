@@ -8,9 +8,11 @@ namespace Application.Commands.DeletePublisher
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public DeletePublisherHandler(IUnitOfWork unitOfWork)
+        private readonly IPublisherRepository _publisherRepository;
+        public DeletePublisherHandler(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
         {
             _unitOfWork = unitOfWork;
+            _publisherRepository = publisherRepository;
             _logger = LogManager.GetLogger(typeof(DeletePublisherHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.DeletePublisher
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to delete a Publisher by ID: " + request.id);
-                await _unitOfWork.PublisherRepository.DeleteByIdAsync(request.id);
+                await _publisherRepository.DeleteByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a Publisher: " + ex.Message, ex);
                 throw;
             }

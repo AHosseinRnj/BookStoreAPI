@@ -8,12 +8,10 @@ namespace Infrastructure.Persistance.Repositories
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public OrderRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public OrderRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateOrderCommand order)
@@ -26,13 +24,13 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("OrderDate", order.orderDate, DbType.DateTime);
             parameters.Add("userId", order.userId, DbType.Int32);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task<GetOrderQueryResponse> GetOrderByIdAsync(int id)
         {
             var query = "SELECT * FROM [Order] WHERE Id = @Id";
-            var order = await _connection.QueryFirstAsync<GetOrderQueryResponse>(query, new { id }, _transaction);
+            var order = await _dapperContext.Connection.QueryFirstAsync<GetOrderQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return order;
         }
@@ -40,7 +38,7 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<IEnumerable<GetOrderQueryResponse>> GetOrdersAsync()
         {
             var query = "SELECT * FROM [Order]";
-            var listOfOrders = await _connection.QueryAsync<GetOrderQueryResponse>(query, null, _transaction);
+            var listOfOrders = await _dapperContext.Connection.QueryAsync<GetOrderQueryResponse>(query, null, _dapperContext.Transaction);
 
             return listOfOrders;
         }

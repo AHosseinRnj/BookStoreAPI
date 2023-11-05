@@ -1,23 +1,19 @@
 ﻿using Application.Commands.CreateUser;
 using Application.Commands.UpdateUser;
-using Application.Query.Author.GetAuthor;
 using Application.Query.GetUser;
 using Application.Query.GetUserOrders;
 using Application.Repositpries;
 using Dapper;
-using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public UserRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public UserRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateUserCommand user)
@@ -31,19 +27,19 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("Address", user.Address, DbType.String);
             parameters.Add("Phone", user.Phone, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var query = "DELETE FROM [dbo].[User] WHERE id = @Id";
-            await _connection.ExecuteAsync(query, new { id }, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task<GetUserQueryResponse> GetUserByIdAsync(int id)
         {
             var query = "SELECT * FROM [dbo].[User] WHERE id = @Id";
-            var user = await _connection.QueryFirstAsync<GetUserQueryResponse>(query, new { id }, _transaction);
+            var user = await _dapperContext.Connection.QueryFirstAsync<GetUserQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return user;
         }
@@ -56,7 +52,7 @@ namespace Infrastructure.Persistance.Repositories
                         "JOIN Book B ON OB.BookId = B.Id " +
                         "WHERE O.UserId = @id " +
                         "ORDER BY B.Title";
-            var listOfOrders = await _connection.QueryAsync<GetUserOrdersQueryResponse>(query, new { id }, _transaction);
+            var listOfOrders = await _dapperContext.Connection.QueryAsync<GetUserOrdersQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return listOfOrders;
         }
@@ -64,7 +60,7 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync()
         {
             var query = "SELECT * FROM [dbo].[User]";
-            var listOfUsers = await _connection.QueryAsync<GetUserQueryResponse>(query, null, _transaction);
+            var listOfUsers = await _dapperContext.Connection.QueryAsync<GetUserQueryResponse>(query, null, _dapperContext.Transaction);
 
             return listOfUsers;
         }
@@ -80,7 +76,7 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("Address", request.user.Address, DbType.String);
             parameters.Add("Phone", request.user.Phone, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
     }
 }

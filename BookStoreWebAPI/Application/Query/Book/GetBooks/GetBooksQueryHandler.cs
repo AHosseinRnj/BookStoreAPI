@@ -10,9 +10,11 @@ namespace Application.Query.GetBooks
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetBooksQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IBookRepository _bookRepository;
+        public GetBooksQueryHandler(IUnitOfWork unitOfWork, IBookRepository bookRepository)
         {
             _unitOfWork = unitOfWork;
+            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(GetBooksQueryHandler));
         }
 
@@ -22,11 +24,13 @@ namespace Application.Query.GetBooks
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get all books");
-                result = await _unitOfWork.BookRepository.GetBooksAsync();
+                result = await _bookRepository.GetBooksAsync();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting Books: " + ex.Message, ex);
                 throw;
             }

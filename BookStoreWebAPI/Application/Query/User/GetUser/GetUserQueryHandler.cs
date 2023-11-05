@@ -8,9 +8,11 @@ namespace Application.Query.GetUser
     {
         private IUnitOfWork _unitOfWork;
         private readonly ILog _logger;
-        public GetUserQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IUserRepository _userRepository;
+        public GetUserQueryHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
             _logger = LogManager.GetLogger(typeof(GetUserQueryHandler));
         }
 
@@ -20,11 +22,13 @@ namespace Application.Query.GetUser
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get a User by ID: " + request.id);
-                user = await _unitOfWork.UserRepository.GetUserByIdAsync(request.id);
+                user = await _userRepository.GetUserByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting a User: " + ex.Message, ex);
                 throw;
             }

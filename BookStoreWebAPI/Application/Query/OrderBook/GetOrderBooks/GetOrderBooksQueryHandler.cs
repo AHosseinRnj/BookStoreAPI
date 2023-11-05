@@ -2,7 +2,6 @@
 using Application.Repositpries;
 using log4net;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Application.Query.GetOrderBooks
 {
@@ -10,9 +9,11 @@ namespace Application.Query.GetOrderBooks
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetOrderBooksQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IOrderBookRepository _orderBookRepository;
+        public GetOrderBooksQueryHandler(IUnitOfWork unitOfWork, IOrderBookRepository orderBookRepository)
         {
             _unitOfWork = unitOfWork;
+            _orderBookRepository = orderBookRepository;
             _logger = LogManager.GetLogger(typeof(GetOrderBooksQueryHandler));
         }
 
@@ -22,11 +23,13 @@ namespace Application.Query.GetOrderBooks
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get all OrderBooks");
-                orderBooks = await _unitOfWork.OrderBookRepository.GetOrderBooksAsync();
+                orderBooks = await _orderBookRepository.GetOrderBooksAsync();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting OrderBooks: " + ex.Message, ex);
                 throw;
             }

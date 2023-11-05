@@ -2,7 +2,6 @@
 using Application.Repositpries;
 using log4net;
 using MediatR;
-using System.Collections.Generic;
 
 namespace Application.Query.GetCategories
 {
@@ -10,9 +9,11 @@ namespace Application.Query.GetCategories
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetCategoriesQueryHandler(IUnitOfWork unitOfWork)
+        private readonly ICategoryRepository _categoryRepository;
+        public GetCategoriesQueryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(GetCategoriesQueryHandler));
         }
 
@@ -22,11 +23,13 @@ namespace Application.Query.GetCategories
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get Categories");
-                listOfCategories = await _unitOfWork.CategoryRepository.GetCategoriesAsync();
+                listOfCategories = await _categoryRepository.GetCategoriesAsync();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting Categories: " + ex.Message, ex);
                 throw;
             }

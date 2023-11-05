@@ -8,9 +8,11 @@ namespace Application.Commands.CreateOrderBook
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public CreateOrderBookHandler(IUnitOfWork unitOfWork)
+        private readonly IOrderBookRepository _orderBookRepository;
+        public CreateOrderBookHandler(IUnitOfWork unitOfWork, IOrderBookRepository orderBookRepository)
         {
             _unitOfWork = unitOfWork;
+            _orderBookRepository = orderBookRepository;
             _logger = LogManager.GetLogger(typeof(CreateOrderBookHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.CreateOrderBook
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add an OrderBook.");
-                await _unitOfWork.OrderBookRepository.AddAsync(request);
+                await _orderBookRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding an OrderBook: " + ex.Message, ex);
                 throw;
             }

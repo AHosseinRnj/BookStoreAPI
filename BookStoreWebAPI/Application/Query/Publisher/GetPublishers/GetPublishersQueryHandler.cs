@@ -9,9 +9,11 @@ namespace Application.Query.GetPublishers
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetPublishersQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IPublisherRepository _publisherRepository;
+        public GetPublishersQueryHandler(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
         {
             _unitOfWork = unitOfWork;
+            _publisherRepository = publisherRepository;
             _logger = LogManager.GetLogger(typeof(GetPublishersQueryHandler));
         }
 
@@ -21,11 +23,13 @@ namespace Application.Query.GetPublishers
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get Publishers");
-                result = await _unitOfWork.PublisherRepository.GetPublishersAsync();
+                result = await _publisherRepository.GetPublishersAsync();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting Publishers: " + ex.Message, ex);
                 throw;
             }

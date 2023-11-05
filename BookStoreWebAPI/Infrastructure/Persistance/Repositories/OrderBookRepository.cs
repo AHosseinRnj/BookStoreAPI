@@ -8,12 +8,10 @@ namespace Infrastructure.Persistance.Repositories
 {
     public class OrderBookRepository : IOrderBookRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public OrderBookRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public OrderBookRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateOrderBookCommand orderBook)
@@ -26,13 +24,13 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("Quantity", orderBook.quantity, DbType.Int32);
             parameters.Add("Price", orderBook.Price, DbType.Double);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task<IEnumerable<GetOrderBookQueryResponse>> GetOrderBooksAsync()
         {
             var query = "SELECT B.Title, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
-            var orderBooks = await _connection.QueryAsync<GetOrderBookQueryResponse>(query, null, _transaction);
+            var orderBooks = await _dapperContext.Connection.QueryAsync<GetOrderBookQueryResponse>(query, null, _dapperContext.Transaction);
 
             return orderBooks;
         }

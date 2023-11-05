@@ -8,10 +8,11 @@ namespace Application.Commands.DeleteCategory
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public DeleteCategoryHandler(IUnitOfWork unitOfWork)
+        private readonly ICategoryRepository _categoryRepository;
+        public DeleteCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
-
+            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(DeleteCategoryHandler));
         }
 
@@ -19,11 +20,13 @@ namespace Application.Commands.DeleteCategory
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to delete a Category by ID: " + request.id);
-                await _unitOfWork.CategoryRepository.DeleteByIdAsync(request.id);
+                await _categoryRepository.DeleteByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a Category: " + ex.Message, ex);
                 throw;
             }

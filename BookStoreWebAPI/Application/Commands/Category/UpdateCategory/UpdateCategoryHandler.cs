@@ -8,9 +8,11 @@ namespace Application.Commands.UpdateCategory
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public UpdateCategoryHandler(IUnitOfWork unitOfWork)
+        private readonly ICategoryRepository _categoryRepository;
+        public UpdateCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(UpdateCategoryHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.UpdateCategory
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to update a Category.");
-                await _unitOfWork.CategoryRepository.UpdateAsync(request);
+                await _categoryRepository.UpdateAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error updating a Category: " + ex.Message, ex);
                 throw;
             }

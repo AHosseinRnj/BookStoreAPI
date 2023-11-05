@@ -9,12 +9,10 @@ namespace Infrastructure.Persistance.Repositories
 {
     public class BookRepository : IBookRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public BookRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public BookRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateBookCommand book)
@@ -31,19 +29,19 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("PublisherId", book.PublisherId, DbType.Int32);
             parameters.Add("CategoryId", book.CategoryId, DbType.Int32);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var query = "DELETE FROM Book WHERE id = @Id";
-            await _connection.ExecuteAsync(query, new { id }, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetBooksAsync()
         {
             var query = "SELECT * FROM Book";
-            var listOfBooks = await _connection.QueryAsync<GetBookQueryResponse>(query, null, _transaction);
+            var listOfBooks = await _dapperContext.Connection.QueryAsync<GetBookQueryResponse>(query, null, _dapperContext.Transaction);
 
             return listOfBooks;
         }
@@ -52,7 +50,7 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<GetBookQueryResponse> GetBookByIdAsync(int id)
         {
             var query = "SELECT * FROM Book WHERE id=@Id";
-            var book = await _connection.QueryFirstAsync<GetBookQueryResponse>(query, new { id }, _transaction);
+            var book = await _dapperContext.Connection.QueryFirstAsync<GetBookQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return book;
         }
@@ -71,7 +69,7 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("PublisherId", book.PublisherId, DbType.Int32);
             parameters.Add("CategoryId", book.CategoryId, DbType.Int32);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
     }
 }

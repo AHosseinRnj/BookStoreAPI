@@ -1,5 +1,4 @@
 ﻿using Application.Repositpries;
-using Domain.Entities;
 using log4net;
 using MediatR;
 
@@ -9,9 +8,11 @@ namespace Application.Commands.CreateBook
     {
         private readonly ILog _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateBookHandler(IUnitOfWork unitOfWork)
+        private readonly IBookRepository _bookRepository;
+        public CreateBookHandler(IUnitOfWork unitOfWork, IBookRepository bookRepository)
         {
             _unitOfWork = unitOfWork;
+            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(CreateBookHandler));
         }
 
@@ -19,11 +20,13 @@ namespace Application.Commands.CreateBook
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add a book.");
-                await _unitOfWork.BookRepository.AddAsync(request);
+                await _bookRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding a book: " + ex.Message, ex);
                 throw;
             }

@@ -9,9 +9,11 @@ namespace Application.Query.GetCategoryBooks
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetCategoryBooksHandler(IUnitOfWork unitOfWork)
+        private readonly ICategoryRepository _categoryRepository;
+        public GetCategoryBooksHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(GetCategoryBooksHandler));
         }
 
@@ -21,11 +23,13 @@ namespace Application.Query.GetCategoryBooks
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get a Category's Books by ID: " + request.id);
-                listOfBooks = await _unitOfWork.CategoryRepository.GetCategoryBooksAsync(request.id);
+                listOfBooks = await _categoryRepository.GetCategoryBooksAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting an Category's Books: " + ex.Message, ex);
                 throw;
             }

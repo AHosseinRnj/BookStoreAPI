@@ -10,12 +10,10 @@ namespace Infrastructure.Persistance.Repositories
 {
     public class AuthorRepository : IAuthorRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public AuthorRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public AuthorRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateAuthorCommand author)
@@ -28,19 +26,19 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("LastName", author.LastName, DbType.String);
             parameters.Add("Description", author.Description, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var query = "DELETE FROM Author WHERE id = @Id";
-            await _connection.ExecuteAsync(query, new { id }, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task<IEnumerable<GetAuthorQueryResponse>> GetAuthorsAsync()
         {
             var query = "SELECT * FROM Author";
-            var listOfAuthors = await _connection.QueryAsync<GetAuthorQueryResponse>(query, null, _transaction);
+            var listOfAuthors = await _dapperContext.Connection.QueryAsync<GetAuthorQueryResponse>(query, null, _dapperContext.Transaction);
 
             return listOfAuthors;
         }
@@ -48,14 +46,14 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<GetAuthorQueryResponse> GetAuthorById(int id)
         {
             var query = "SELECT * FROM Author WHERE id = @Id";
-            var author = await _connection.QueryFirstAsync<GetAuthorQueryResponse>(query, new { id }, _transaction);
+            var author = await _dapperContext.Connection.QueryFirstAsync<GetAuthorQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return author;
         }
         public async Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id)
         {
             var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Book JOIN Author ON Book.AuthorId = Author.Id WHERE Author.Id = @AutId";
-            var listOfBooks = await _connection.QueryAsync<GetBookQueryResponse>(query, new { AutId = id }, _transaction);
+            var listOfBooks = await _dapperContext.Connection.QueryAsync<GetBookQueryResponse>(query, new { AutId = id }, _dapperContext.Transaction);
 
             return listOfBooks;
         }
@@ -70,7 +68,7 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("LastName", author.LastName, DbType.String);
             parameters.Add("Description", author.Description, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
     }
 }

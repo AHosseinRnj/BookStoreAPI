@@ -8,9 +8,11 @@ namespace Application.Commands.CreateUser
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public CreateUserHandler(IUnitOfWork unitOfWork)
+        private readonly IUserRepository _userRepository;
+        public CreateUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
             _logger = LogManager.GetLogger(typeof(CreateUserHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.CreateUser
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add a User.");
-                await _unitOfWork.UserRepository.AddAsync(request);
+                await _userRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding a User: " + ex.Message, ex);
                 throw;
             }

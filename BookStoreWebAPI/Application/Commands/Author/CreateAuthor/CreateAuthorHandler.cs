@@ -8,9 +8,11 @@ namespace Application.Commands.CreateAuthor
     {
         private readonly ILog _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public CreateAuthorHandler(IUnitOfWork unitOfWork)
+        private readonly IAuthorRepository _authorRepository;
+        public CreateAuthorHandler(IUnitOfWork unitOfWork, IAuthorRepository authorRepository)
         {
             _unitOfWork = unitOfWork;
+            _authorRepository = authorRepository;
             _logger = LogManager.GetLogger(typeof(CreateAuthorHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.CreateAuthor
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add an Author.");
-                await _unitOfWork.AuthorRepository.AddAsync(request);;
+                await _authorRepository.AddAsync(request); ;
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding an Author: " + ex.Message, ex);
                 throw;
             }

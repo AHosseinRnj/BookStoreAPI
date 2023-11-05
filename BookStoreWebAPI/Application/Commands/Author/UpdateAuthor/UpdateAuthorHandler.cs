@@ -8,9 +8,11 @@ namespace Application.Commands.UpdateAuthor
     {
         private readonly ILog _logger;
         private readonly IUnitOfWork _uniteOfWork;
-        public UpdateAuthorHandler(IUnitOfWork uniteOfWork)
+        private readonly IAuthorRepository _authorRepository;
+        public UpdateAuthorHandler(IUnitOfWork uniteOfWork, IAuthorRepository authorRepository)
         {
             _uniteOfWork = uniteOfWork;
+            _authorRepository = authorRepository;
             _logger = LogManager.GetLogger(typeof(UpdateAuthorHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.UpdateAuthor
         {
             try
             {
+                _uniteOfWork.BeginTransaction();
                 _logger.Info("Received a request to update an Author.");
-                await _uniteOfWork.AuthorRepository.UpdateAsync(request);
+                await _authorRepository.UpdateAsync(request);
             }
             catch (Exception ex)
             {
+                _uniteOfWork.Rollback();
                 _logger.Error("Error updating an Author: " + ex.Message, ex);
                 throw;
             }

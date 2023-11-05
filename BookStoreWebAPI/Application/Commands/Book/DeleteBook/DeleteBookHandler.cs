@@ -8,9 +8,11 @@ namespace Application.Commands.DeleteBook
     {
         private readonly ILog _logger;
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteBookHandler(IUnitOfWork unitOfWork)
+        private readonly IBookRepository _bookRepository;
+        public DeleteBookHandler(IUnitOfWork unitOfWork, IBookRepository bookRepository)
         {
             _unitOfWork = unitOfWork;
+            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(DeleteBookHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.DeleteBook
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to delete a book by ID: " + request.id);
-                await _unitOfWork.BookRepository.DeleteByIdAsync(request.id);
+                await _bookRepository.DeleteByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a book: " + ex.Message, ex);
                 throw;
             }

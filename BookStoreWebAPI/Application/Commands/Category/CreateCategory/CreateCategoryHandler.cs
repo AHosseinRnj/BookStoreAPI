@@ -8,9 +8,11 @@ namespace Application.Commands.CreateCategory
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public CreateCategoryHandler(IUnitOfWork unitOfWork)
+        private readonly ICategoryRepository _categoryRepository;
+        public CreateCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(CreateCategoryHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.CreateCategory
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add a Category.");
-                await _unitOfWork.CategoryRepository.AddAsync(request);
+                await _categoryRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding a Category: " + ex.Message, ex);
                 throw;
             }

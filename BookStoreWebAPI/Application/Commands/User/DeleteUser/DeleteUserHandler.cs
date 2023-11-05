@@ -8,9 +8,11 @@ namespace Application.Commands.DeleteUser
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public DeleteUserHandler(IUnitOfWork unitOfWork)
+        private readonly IUserRepository _userRepository;
+        public DeleteUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
+            _userRepository = userRepository;
             _logger = LogManager.GetLogger(typeof(DeleteUserHandler));
         }
 
@@ -18,11 +20,13 @@ namespace Application.Commands.DeleteUser
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to delete a User by ID: " + request.id);
-                await _unitOfWork.UserRepository.DeleteByIdAsync(request.id);
+                await _userRepository.DeleteByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a User: " + ex.Message, ex);
                 throw;
             }

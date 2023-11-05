@@ -9,9 +9,11 @@ namespace Application.Query.GetAuthors
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetAuthorsQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IAuthorRepository _authorRepository;
+        public GetAuthorsQueryHandler(IUnitOfWork unitOfWork, IAuthorRepository authorRepository)
         {
             _unitOfWork = unitOfWork;
+            _authorRepository = authorRepository;
             _logger = LogManager.GetLogger(typeof(GetAuthorsQueryHandler));
         }
 
@@ -21,11 +23,13 @@ namespace Application.Query.GetAuthors
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get Authors");
-                result = await _unitOfWork.AuthorRepository.GetAuthorsAsync();
+                result = await _authorRepository.GetAuthorsAsync();
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting Authors: " + ex.Message, ex);
                 throw;
             }

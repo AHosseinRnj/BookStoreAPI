@@ -9,9 +9,11 @@ namespace Application.Commands.CreateOrder
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public CreateOrderHandler(IUnitOfWork unitOfWork)
+        private readonly IOrderRepository _orderRepository;
+        public CreateOrderHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
         {
             _unitOfWork = unitOfWork;
+            _orderRepository = orderRepository;
             _logger = LogManager.GetLogger(typeof(CreateOrderHandler));
         }
 
@@ -19,11 +21,13 @@ namespace Application.Commands.CreateOrder
         {
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add an Order.");
-                await _unitOfWork.OrderRepository.AddAsync(request);
+                await _orderRepository.AddAsync(request);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error adding an Order: " + ex.Message, ex);
                 throw;
             }

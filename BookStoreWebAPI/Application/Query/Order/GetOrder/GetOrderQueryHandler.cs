@@ -8,9 +8,11 @@ namespace Application.Query.GetOrder
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        public GetOrderQueryHandler(IUnitOfWork unitOfWork)
+        private readonly IOrderRepository _orderRepository;
+        public GetOrderQueryHandler(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
         {
             _unitOfWork = unitOfWork;
+            _orderRepository = orderRepository;
             _logger = LogManager.GetLogger(typeof(GetOrderQueryHandler));
         }
 
@@ -20,11 +22,13 @@ namespace Application.Query.GetOrder
 
             try
             {
+                _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get an Order by ID: " + request.id);
-                order = await _unitOfWork.OrderRepository.GetOrderByIdAsync(request.id);
+                order = await _orderRepository.GetOrderByIdAsync(request.id);
             }
             catch (Exception ex)
             {
+                _unitOfWork.Rollback();
                 _logger.Error("Error getting an Order: " + ex.Message, ex);
                 throw;
             }

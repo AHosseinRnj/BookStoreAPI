@@ -2,7 +2,6 @@
 using Application.Commands.UpdateCategory;
 using Application.Query.GetBook;
 using Application.Query.GetCategory;
-using Application.Query.GetPublisher;
 using Application.Repositpries;
 using Dapper;
 using System.Data;
@@ -11,12 +10,10 @@ namespace Infrastructure.Persistance.Repositories
 {
     public class CategoryRepository : ICategoryRepository
     {
-        private readonly IDbTransaction _transaction;
-        private readonly IDbConnection _connection;
-        public CategoryRepository(IDbTransaction dbTransaction)
+        private readonly DapperContext _dapperContext;
+        public CategoryRepository(DapperContext dapperContext)
         {
-            _transaction = dbTransaction;
-            _connection = _transaction.Connection;
+            _dapperContext = dapperContext;
         }
 
         public async Task AddAsync(CreateCategoryCommand category)
@@ -27,19 +24,19 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("id", category.id, DbType.Int32);
             parameters.Add("name", category.name, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             var query = "DELETE FROM Category WHERE id = @Id";
-            await _connection.ExecuteAsync(query, new { id }, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task<IEnumerable<GetCategoryQueryResponse>> GetCategoriesAsync()
         {
             var query = "SELECT Name FROM Category";
-            var listOfCategories = await _connection.QueryAsync<GetCategoryQueryResponse>(query, null, _transaction);
+            var listOfCategories = await _dapperContext.Connection.QueryAsync<GetCategoryQueryResponse>(query, null, _dapperContext.Transaction);
 
             return listOfCategories;
         }
@@ -47,7 +44,7 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<IEnumerable<GetBookQueryResponse>> GetCategoryBooksAsync(int id)
         {
             var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Book JOIN Category ON Book.CategoryId = Category.Id WHERE Category.Id = @id";
-            var listOfBooks = await _connection.QueryAsync<GetBookQueryResponse>(query, new { id }, _transaction);
+            var listOfBooks = await _dapperContext.Connection.QueryAsync<GetBookQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return listOfBooks;
         }
@@ -55,7 +52,7 @@ namespace Infrastructure.Persistance.Repositories
         public async Task<GetCategoryQueryResponse> GetCategoryByIdAsync(int id)
         {
             var query = "SELECT Name FROM Category WHERE id = @Id";
-            var category = await _connection.QueryFirstAsync<GetCategoryQueryResponse>(query, new { id }, _transaction);
+            var category = await _dapperContext.Connection.QueryFirstAsync<GetCategoryQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return category;
         }
@@ -67,7 +64,7 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("Id", category.id, DbType.Int32);
             parameters.Add("name", category.name, DbType.String);
 
-            await _connection.ExecuteAsync(query, parameters, _transaction);
+            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
     }
 }
