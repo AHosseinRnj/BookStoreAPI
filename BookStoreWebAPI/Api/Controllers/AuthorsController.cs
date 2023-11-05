@@ -29,7 +29,6 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAuthors()
         {
-
             var result = await _sender.Send(new GetAuthorsQuery());
 
             if (result == null)
@@ -52,7 +51,6 @@ namespace Api.Controllers
         [HttpGet("{id}/Books", Name = "GetAuthorBooks")]
         public async Task<IActionResult> GetAuthorBooks(int id)
         {
-
             var result = await _sender.Send(new GetAuthorBooksQuery(id));
 
             if (result == null)
@@ -71,7 +69,6 @@ namespace Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAuthor(int id)
         {
-
             await _sender.Send(new DeleteAuthorCommand(id));
             return NoContent();
         }
