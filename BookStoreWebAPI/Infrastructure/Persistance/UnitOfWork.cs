@@ -1,4 +1,4 @@
-﻿using Application.Repositpries;
+﻿using Application;
 
 namespace Infrastructure.Persistance
 {

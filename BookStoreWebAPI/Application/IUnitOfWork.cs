@@ -1,4 +1,4 @@
-﻿namespace Application.Repositpries
+﻿namespace Application
 {
     public interface IUnitOfWork
     {
