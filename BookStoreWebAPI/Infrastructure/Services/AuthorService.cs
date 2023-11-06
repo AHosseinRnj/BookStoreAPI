@@ -1,37 +1,79 @@
-﻿using Application.Commands.CreateAuthor;
+﻿using Application;
+using Application.Commands.CreateAuthor;
 using Application.Commands.UpdateAuthor;
 using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositpries;
 using Application.Services;
+using Azure.Core;
 using Domain.Entities;
+using Infrastructure.Persistance;
+using log4net;
 
 namespace Infrastructure.Services
 {
     public class AuthorService : IAuthorService
     {
-        private IAuthorRepository _authorRepository;
-        public AuthorService(IAuthorRepository authorRepository)
+        private readonly ILog _logger;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IAuthorRepository _authorRepository;
+        public AuthorService(IUnitOfWork unitOfWork, IAuthorRepository authorRepository)
         {
+            _unitOfWork = unitOfWork;
             _authorRepository = authorRepository;
+            _logger = LogManager.GetLogger(typeof(AuthorService));
         }
 
         public async Task AddAsync(CreateAuthorCommand request)
         {
-            var author = new Author
+            try
             {
-                Id = request.Id,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Description = request.Description
-            };
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to add an Author.");
 
-            await _authorRepository.AddAsync(author);
+                var author = new Author
+                {
+                    Id = request.Id,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Description = request.Description
+                };
+
+                await _authorRepository.AddAsync(author);
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error adding an Author: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
+
+            _logger.Info("Author added successfully.");
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            await _authorRepository.DeleteByIdAsync(id);
+            try
+            {
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to delete a Author by ID: " + id);
+
+                await _authorRepository.DeleteByIdAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error deleting an Author: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id)
@@ -78,15 +120,33 @@ namespace Infrastructure.Services
 
         public async Task UpdateAsync(UpdateAuthorCommand request)
         {
-            var author = new Author
+            try
             {
-                Id = request.id,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Description = request.Description
-            };
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to update an Author.");
 
-            await _authorRepository.UpdateAsync(author);
+                var author = new Author
+                {
+                    Id = request.id,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
+                    Description = request.Description
+                };
+
+                await _authorRepository.UpdateAsync(author);
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error updating an Author: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
+
+            _logger.Info("Author updated successfully.");
         }
     }
 }
