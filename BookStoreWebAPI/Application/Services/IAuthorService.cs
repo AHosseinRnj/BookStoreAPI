@@ -7,11 +7,11 @@ namespace Application.Services
 {
     public interface IAuthorService
     {
-        Task AddAsync(CreateAuthorCommand author);
+        Task AddAsync(CreateAuthorCommand request);
         Task<IEnumerable<GetAuthorQueryResponse>> GetAuthorsAsync();
         Task<GetAuthorQueryResponse> GetAuthorById(int id);
         Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id);
-        Task UpdateAsync(UpdateAuthorCommand author);
+        Task UpdateAsync(UpdateAuthorCommand request);
         Task DeleteByIdAsync(int id);
     }
 }
