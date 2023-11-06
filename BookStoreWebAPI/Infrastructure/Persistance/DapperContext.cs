@@ -12,7 +12,7 @@ namespace Infrastructure.Persistance
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            Connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+            Connection = new SqlConnection(_configuration.GetConnectionString("SecondPC"));
             Connection.Open();
         }
     }
