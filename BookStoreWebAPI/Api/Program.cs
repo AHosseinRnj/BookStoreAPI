@@ -1,7 +1,9 @@
 using Application;
 using Application.Repositpries;
+using Application.Services;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
+using Infrastructure.Services;
 using log4net.Config;
 using MediatR;
 using Microsoft.AspNetCore.Diagnostics;
@@ -14,7 +16,9 @@ XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
 // Add services to the container.
 builder.Services.AddMediatR(typeof(MediatRStarter).Assembly);
+
 builder.Services.AddScoped<DapperContext>();
+
 builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IBookRepository, BookRepository>();
@@ -23,6 +27,8 @@ builder.Services.AddTransient<IOrderRepository, OrderRepository>();
 builder.Services.AddTransient<IOrderBookRepository, OrderBookRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IAuthorService, AuthorService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

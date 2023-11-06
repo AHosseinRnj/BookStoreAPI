@@ -5,9 +5,7 @@ using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositpries;
 using Application.Services;
-using Azure.Core;
 using Domain.Entities;
-using Infrastructure.Persistance;
 using log4net;
 
 namespace Infrastructure.Services
@@ -74,47 +72,107 @@ namespace Infrastructure.Services
             {
                 _unitOfWork.Commit();
             }
+
+            _logger.Info("Author Deleted successfully.");
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetAuthorBooksAsync(int id)
         {
-            var listOfAuthorBooks = await _authorRepository.GetAuthorBooksAsync(id);
+            List<GetBookQueryResponse> result;
 
-            var result = listOfAuthorBooks.Select(b => new GetBookQueryResponse
+            try
             {
-                Title = b.Title,
-                ISBN = b.ISBN,
-                Price = b.Price
-            });
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to get an Author's Books by ID: " + id);
 
+                var listOfAuthorBooks = await _authorRepository.GetAuthorBooksAsync(id);
+
+                result = listOfAuthorBooks.Select(b => new GetBookQueryResponse
+                {
+                    Title = b.Title,
+                    ISBN = b.ISBN,
+                    Price = b.Price
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error getting an Author's Books: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
+
+            _logger.Info("Author's Books retrieved successfully.");
             return result;
         }
 
         public async Task<GetAuthorQueryResponse> GetAuthorById(int id)
         {
-            var author = await _authorRepository.GetAuthorById(id);
+            GetAuthorQueryResponse result;
 
-            var authorReponse = new GetAuthorQueryResponse
+            try
             {
-                FirstName = author.FirstName,
-                LastName = author.LastName,
-                Description = author.Description
-            };
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to get an Author by ID: " + id);
 
-            return authorReponse;
+
+                var author = await _authorRepository.GetAuthorById(id);
+
+                result = new GetAuthorQueryResponse
+                {
+                    FirstName = author.FirstName,
+                    LastName = author.LastName,
+                    Description = author.Description
+                };
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error getting an Author: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
+
+            _logger.Info("Author retrieved successfully.");
+            return result;
         }
 
         public async Task<IEnumerable<GetAuthorQueryResponse>> GetAuthorsAsync()
         {
-            var listOfAuthors = await _authorRepository.GetAuthorsAsync();
+            List<GetAuthorQueryResponse> result;
 
-            var result = listOfAuthors.Select(a => new GetAuthorQueryResponse
+            try
             {
-                FirstName = a.FirstName,
-                LastName = a.LastName,
-                Description = a.Description
-            });
+                _unitOfWork.BeginTransaction();
+                _logger.Info("Received a request to get Authors");
 
+                var listOfAuthors = await _authorRepository.GetAuthorsAsync();
+
+                result = listOfAuthors.Select(a => new GetAuthorQueryResponse
+                {
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Description = a.Description
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                _unitOfWork.Rollback();
+                _logger.Error("Error getting Authors: " + ex.Message, ex);
+                throw;
+            }
+            finally
+            {
+                _unitOfWork.Commit();
+            }
+
+            _logger.Info("Authors retrieved successfully.");
             return result;
         }
 
