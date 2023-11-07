@@ -1,17 +1,15 @@
-﻿using Application.Commands.CreateUser;
-using Application.Commands.UpdateUser;
-using Application.Query.GetUser;
-using Application.Query.GetUserOrders;
+﻿using Application.Query.GetUserOrders;
+using Domain.Entities;
 
 namespace Application.Repositpries
 {
     public interface IUserRepository
     {
-        Task AddAsync(CreateUserCommand user);
-        Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync();
-        Task<GetUserQueryResponse> GetUserByIdAsync(int id);
+        Task AddAsync(User user);
+        Task<IEnumerable<User>> GetUsersAsync();
+        Task<User> GetUserByIdAsync(int id);
         Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id);
-        Task UpdateAsync(UpdateUserCommand request);
+        Task UpdateAsync(User user);
         Task DeleteByIdAsync(int id);
     }
 }

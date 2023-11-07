@@ -1,9 +1,7 @@
-﻿using Application.Commands.CreateUser;
-using Application.Commands.UpdateUser;
-using Application.Query.GetUser;
-using Application.Query.GetUserOrders;
+﻿using Application.Query.GetUserOrders;
 using Application.Repositpries;
 using Dapper;
+using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
@@ -16,14 +14,14 @@ namespace Infrastructure.Persistance.Repositories
             _dapperContext = dapperContext;
         }
 
-        public async Task AddAsync(CreateUserCommand user)
+        public async Task AddAsync(User user)
         {
             var query = "INSERT INTO [dbo].[User] (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("Id", user.id, DbType.Int32);
-            parameters.Add("FirstName", user.firstName, DbType.String);
-            parameters.Add("LastName", user.lastName, DbType.String);
+            parameters.Add("Id", user.Id, DbType.Int32);
+            parameters.Add("FirstName", user.FirstName, DbType.String);
+            parameters.Add("LastName", user.LastName, DbType.String);
             parameters.Add("Address", user.Address, DbType.String);
             parameters.Add("Phone", user.Phone, DbType.String);
 
@@ -36,10 +34,10 @@ namespace Infrastructure.Persistance.Repositories
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
-        public async Task<GetUserQueryResponse> GetUserByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
             var query = "SELECT * FROM [dbo].[User] WHERE id = @Id";
-            var user = await _dapperContext.Connection.QueryFirstAsync<GetUserQueryResponse>(query, new { id }, _dapperContext.Transaction);
+            var user = await _dapperContext.Connection.QueryFirstAsync<User>(query, new { id }, _dapperContext.Transaction);
 
             return user;
         }
@@ -57,24 +55,24 @@ namespace Infrastructure.Persistance.Repositories
             return listOfOrders;
         }
 
-        public async Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync()
+        public async Task<IEnumerable<User>> GetUsersAsync()
         {
             var query = "SELECT * FROM [dbo].[User]";
-            var listOfUsers = await _dapperContext.Connection.QueryAsync<GetUserQueryResponse>(query, null, _dapperContext.Transaction);
+            var listOfUsers = await _dapperContext.Connection.QueryAsync<User>(query, null, _dapperContext.Transaction);
 
             return listOfUsers;
         }
 
-        public async Task UpdateAsync(UpdateUserCommand request)
+        public async Task UpdateAsync(User user)
         {
             var query = "UPDATE [dbo].[User] SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
 
             var parameters = new DynamicParameters();
-            parameters.Add("Id", request.id, DbType.Int32);
-            parameters.Add("FirstName", request.user.FirstName, DbType.String);
-            parameters.Add("LastName", request.user.LastName, DbType.String);
-            parameters.Add("Address", request.user.Address, DbType.String);
-            parameters.Add("Phone", request.user.Phone, DbType.String);
+            parameters.Add("Id", user.Id, DbType.Int32);
+            parameters.Add("FirstName", user.FirstName, DbType.String);
+            parameters.Add("LastName", user.LastName, DbType.String);
+            parameters.Add("Address", user.Address, DbType.String);
+            parameters.Add("Phone", user.Phone, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
