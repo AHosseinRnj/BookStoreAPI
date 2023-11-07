@@ -1,15 +1,13 @@
-﻿using Application.Commands.CreateBook;
-using Application.Commands.UpdateBook;
-using Application.Query.GetBook;
+﻿using Domain.Entities;
 
 namespace Application.Repositpries
 {
     public interface IBookRepository
     {
-        Task AddAsync(CreateBookCommand book);
-        Task<IEnumerable<GetBookQueryResponse>> GetBooksAsync();
-        Task<GetBookQueryResponse> GetBookByIdAsync(int id);
-        Task UpdateAsync(UpdateBookCommand book);
+        Task AddAsync(Book book);
+        Task<IEnumerable<Book>> GetBooksAsync();
+        Task<Book> GetBookByIdAsync(int id);
+        Task UpdateAsync(Book book);
         Task DeleteByIdAsync(int id);
     }
 }
