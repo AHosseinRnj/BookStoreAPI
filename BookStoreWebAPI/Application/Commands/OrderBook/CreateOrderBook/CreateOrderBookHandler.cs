@@ -1,41 +1,19 @@
-﻿using Application.Repositpries;
-using log4net;
+﻿using Application.Services;
 using MediatR;
 
 namespace Application.Commands.CreateOrderBook
 {
     public class CreateOrderBookHandler : IRequestHandler<CreateOrderBookCommand, Unit>
     {
-        private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
-        private readonly IOrderBookRepository _orderBookRepository;
-        public CreateOrderBookHandler(IUnitOfWork unitOfWork, IOrderBookRepository orderBookRepository)
+        private readonly IOrderBookService _orderBookService;
+        public CreateOrderBookHandler(IOrderBookService orderBookService)
         {
-            _unitOfWork = unitOfWork;
-            _orderBookRepository = orderBookRepository;
-            _logger = LogManager.GetLogger(typeof(CreateOrderBookHandler));
+            _orderBookService = orderBookService;
         }
 
         public async Task<Unit> Handle(CreateOrderBookCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add an OrderBook.");
-                await _orderBookRepository.AddAsync(request);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error adding an OrderBook: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("OrderBook added successfully.");
+            await _orderBookService.AddAsync(request);
             return Unit.Value;
         }
     }

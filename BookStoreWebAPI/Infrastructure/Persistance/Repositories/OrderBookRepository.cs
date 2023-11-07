@@ -1,7 +1,6 @@
-﻿using Application.Commands.CreateOrderBook;
-using Application.Query.GetOrderBook;
-using Application.Repositpries;
+﻿using Application.Repositpries;
 using Dapper;
+using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
@@ -14,23 +13,23 @@ namespace Infrastructure.Persistance.Repositories
             _dapperContext = dapperContext;
         }
 
-        public async Task AddAsync(CreateOrderBookCommand orderBook)
+        public async Task AddAsync(OrderBook orderBook)
         {
             var query = "INSERT INTO [OrderBook] (OrderId, BookId, Quantity, Price) VALUES (@OrderId, @BookId, @Quantity, @Price)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("OrderId", orderBook.orderId, DbType.Int32);
-            parameters.Add("BookId", orderBook.bookId, DbType.Int32);
-            parameters.Add("Quantity", orderBook.quantity, DbType.Int32);
+            parameters.Add("OrderId", orderBook.OrderId, DbType.Int32);
+            parameters.Add("BookId", orderBook.BookId, DbType.Int32);
+            parameters.Add("Quantity", orderBook.Quantity, DbType.Int32);
             parameters.Add("Price", orderBook.Price, DbType.Double);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
-        public async Task<IEnumerable<GetOrderBookQueryResponse>> GetOrderBooksAsync()
+        public async Task<IEnumerable<OrderBook>> GetOrderBooksAsync()
         {
-            var query = "SELECT B.Title, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
-            var orderBooks = await _dapperContext.Connection.QueryAsync<GetOrderBookQueryResponse>(query, null, _dapperContext.Transaction);
+            var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
+            var orderBooks = await _dapperContext.Connection.QueryAsync<OrderBook>(query, null, _dapperContext.Transaction);
 
             return orderBooks;
         }
