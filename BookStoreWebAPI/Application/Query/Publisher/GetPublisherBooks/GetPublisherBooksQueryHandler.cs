@@ -1,44 +1,20 @@
 ﻿using Application.Query.GetBook;
-using Application.Repositpries;
-using log4net;
+using Application.Services;
 using MediatR;
 
 namespace Application.Query.GetPublisherBooks
 {
     public class GetPublisherBooksQueryHandler : IRequestHandler<GetPublisherBooksQuery, IEnumerable<GetBookQueryResponse>>
     {
-        private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
-        private readonly IPublisherRepository _publisherRepository;
-        public GetPublisherBooksQueryHandler(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
+        private readonly IPublisherService _publisherService;
+        public GetPublisherBooksQueryHandler(IPublisherService publisherService)
         {
-            _unitOfWork = unitOfWork;
-            _publisherRepository = publisherRepository;
-            _logger = LogManager.GetLogger(typeof(GetPublisherBooksQueryHandler));
+            _publisherService = publisherService;
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> Handle(GetPublisherBooksQuery request, CancellationToken cancellationToken)
         {
-            IEnumerable<GetBookQueryResponse> result;
-
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a Publisher's Books by ID: " + request.id);
-                result = await _publisherRepository.GetPublisherBooksAsync(request.id);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting an Publisher's Books: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher's Books retrieved successfully.");
+            var result = await _publisherService.GetPublisherBooksAsync(request.id);
             return result;
         }
     }
