@@ -1,9 +1,6 @@
-﻿using Application.Commands.CreateCategory;
-using Application.Commands.UpdateCategory;
-using Application.Query.GetBook;
-using Application.Query.GetCategory;
-using Application.Repositpries;
+﻿using Application.Repositpries;
 using Dapper;
+using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
@@ -16,13 +13,13 @@ namespace Infrastructure.Persistance.Repositories
             _dapperContext = dapperContext;
         }
 
-        public async Task AddAsync(CreateCategoryCommand category)
+        public async Task AddAsync(Category category)
         {
             var query = "INSERT INTO Category (id, name) VALUES (@id, @Name)";
 
             var parameters = new DynamicParameters();
-            parameters.Add("id", category.id, DbType.Int32);
-            parameters.Add("name", category.name, DbType.String);
+            parameters.Add("id", category.Id, DbType.Int32);
+            parameters.Add("name", category.Name, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
@@ -33,36 +30,36 @@ namespace Infrastructure.Persistance.Repositories
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
-        public async Task<IEnumerable<GetCategoryQueryResponse>> GetCategoriesAsync()
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
             var query = "SELECT Name FROM Category";
-            var listOfCategories = await _dapperContext.Connection.QueryAsync<GetCategoryQueryResponse>(query, null, _dapperContext.Transaction);
+            var listOfCategories = await _dapperContext.Connection.QueryAsync<Category>(query, null, _dapperContext.Transaction);
 
             return listOfCategories;
         }
 
-        public async Task<IEnumerable<GetBookQueryResponse>> GetCategoryBooksAsync(int id)
+        public async Task<IEnumerable<Book>> GetCategoryBooksAsync(int id)
         {
             var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Book JOIN Category ON Book.CategoryId = Category.Id WHERE Category.Id = @id";
-            var listOfBooks = await _dapperContext.Connection.QueryAsync<GetBookQueryResponse>(query, new { id }, _dapperContext.Transaction);
+            var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, new { id }, _dapperContext.Transaction);
 
             return listOfBooks;
         }
 
-        public async Task<GetCategoryQueryResponse> GetCategoryByIdAsync(int id)
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
             var query = "SELECT Name FROM Category WHERE id = @Id";
-            var category = await _dapperContext.Connection.QueryFirstAsync<GetCategoryQueryResponse>(query, new { id }, _dapperContext.Transaction);
+            var category = await _dapperContext.Connection.QueryFirstAsync<Category>(query, new { id }, _dapperContext.Transaction);
 
             return category;
         }
 
-        public async Task UpdateAsync(UpdateCategoryCommand category)
+        public async Task UpdateAsync(Category category)
         {
             var query = "UPDATE Category SET name = @Name WHERE Id = @Id";
             var parameters = new DynamicParameters();
-            parameters.Add("Id", category.id, DbType.Int32);
-            parameters.Add("name", category.name, DbType.String);
+            parameters.Add("Id", category.Id, DbType.Int32);
+            parameters.Add("name", category.Name, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }

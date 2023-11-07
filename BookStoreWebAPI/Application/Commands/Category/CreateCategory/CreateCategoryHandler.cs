@@ -1,41 +1,19 @@
-﻿using Application.Repositpries;
-using log4net;
+﻿using Application.Services;
 using MediatR;
 
 namespace Application.Commands.CreateCategory
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit>
     {
-        private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
-        private readonly ICategoryRepository _categoryRepository;
-        public CreateCategoryHandler(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+        private readonly ICategoryService _categoryService;
+        public CreateCategoryHandler(ICategoryService categoryRepository)
         {
-            _unitOfWork = unitOfWork;
-            _categoryRepository = categoryRepository;
-            _logger = LogManager.GetLogger(typeof(CreateCategoryHandler));
+            _categoryService = categoryRepository;
         }
 
         public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a Category.");
-                await _categoryRepository.AddAsync(request);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error adding a Category: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category added successfully.");
+            await _categoryService.AddAsync(request);
             return Unit.Value;
         }
     }
