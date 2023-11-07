@@ -1,12 +1,11 @@
-﻿using Application.Command.CreateOrder;
-using Application.Query.GetOrder;
+﻿using Domain.Entities;
 
 namespace Application.Repositpries
 {
     public interface IOrderRepository
     {
-        Task AddAsync(CreateOrderCommand order);
-        Task<IEnumerable<GetOrderQueryResponse>> GetOrdersAsync();
-        Task<GetOrderQueryResponse> GetOrderByIdAsync(int id);
+        Task AddAsync(Order order);
+        Task<IEnumerable<Order>> GetOrdersAsync();
+        Task<Order> GetOrderByIdAsync(int id);
     }
 }
