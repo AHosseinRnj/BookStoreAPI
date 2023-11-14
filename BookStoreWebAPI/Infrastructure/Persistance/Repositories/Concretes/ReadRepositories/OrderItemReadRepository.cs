@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<OrderItem>> GetOrderItemAsync()
         {
-            var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
+            var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderItems AS OB ON B.Id = OB.BookId";
             var orderBooks = await _dapperContext.Connection.QueryAsync<OrderItem>(query, null, _dapperContext.Transaction);
 
             return orderBooks;

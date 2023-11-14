@@ -15,7 +15,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(OrderItem orderBook)
         {
-            var query = "INSERT INTO [OrderBook] (OrderId, BookId, Quantity, Price) VALUES (@OrderId, @BookId, @Quantity, @Price)";
+            var query = "INSERT INTO [OrderItems] (OrderId, BookId, Quantity, Price) VALUES (@OrderId, @BookId, @Quantity, @Price)";
 
             var parameters = new DynamicParameters();
             parameters.Add("OrderId", orderBook.OrderId, DbType.Int32);

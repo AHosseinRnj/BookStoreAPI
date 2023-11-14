@@ -64,6 +64,7 @@ namespace Application.Services
 
                 result = new GetAuthorQueryResponse
                 {
+                    Id = author.Id,
                     FirstName = author.FirstName,
                     LastName = author.LastName,
                     Biography = author.Biography

@@ -15,7 +15,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Category category)
         {
-            var query = "INSERT INTO Category (id, name) VALUES (@id, @Name)";
+            var query = "INSERT INTO Categories (id, name) VALUES (@id, @Name)";
 
             var parameters = new DynamicParameters();
             parameters.Add("id", category.Id, DbType.Int32);
@@ -26,13 +26,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM Category WHERE id = @Id";
+            var query = "DELETE FROM Categories WHERE id = @Id";
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task UpdateAsync(Category category)
         {
-            var query = "UPDATE Category SET name = @Name WHERE Id = @Id";
+            var query = "UPDATE Categories SET name = @Name WHERE Id = @Id";
             var parameters = new DynamicParameters();
             parameters.Add("Id", category.Id, DbType.Int32);
             parameters.Add("name", category.Name, DbType.String);

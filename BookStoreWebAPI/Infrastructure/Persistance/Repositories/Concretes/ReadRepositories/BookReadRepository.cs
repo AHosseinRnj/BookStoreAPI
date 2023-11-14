@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {
-            var query = "SELECT * FROM Book";
+            var query = "SELECT * FROM Books";
             var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, null, _dapperContext.Transaction);
 
             return listOfBooks;
@@ -22,7 +22,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<Book> GetBookByIdAsync(int id)
         {
-            var query = "SELECT * FROM Book WHERE id=@Id";
+            var query = "SELECT * FROM Books WHERE id=@Id";
             var book = await _dapperContext.Connection.QueryFirstAsync<Book>(query, new { id }, _dapperContext.Transaction);
 
             return book;

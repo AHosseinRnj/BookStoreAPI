@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            var query = "SELECT Name FROM Category";
+            var query = "SELECT Name FROM Categories";
             var listOfCategories = await _dapperContext.Connection.QueryAsync<Category>(query, null, _dapperContext.Transaction);
 
             return listOfCategories;
@@ -22,7 +22,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Book>> GetCategoryBooksAsync(int id)
         {
-            var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Book JOIN Category ON Book.CategoryId = Category.Id WHERE Category.Id = @id";
+            var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Books JOIN Categories ON Book.CategoryId = Category.Id WHERE Category.Id = @id";
             var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, new { id }, _dapperContext.Transaction);
 
             return listOfBooks;
@@ -30,7 +30,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            var query = "SELECT Name FROM Category WHERE id = @Id";
+            var query = "SELECT Name FROM Categories WHERE id = @Id";
             var category = await _dapperContext.Connection.QueryFirstAsync<Category>(query, new { id }, _dapperContext.Transaction);
 
             return category;

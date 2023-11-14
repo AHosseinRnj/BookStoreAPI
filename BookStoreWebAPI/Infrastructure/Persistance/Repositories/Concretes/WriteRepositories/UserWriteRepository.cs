@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
         }
         public async Task AddAsync(User user)
         {
-            var query = "INSERT INTO [dbo].[User] (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
+            var query = "INSERT INTO [dbo].[Users] (Id, FirstName, LastName, Address, Phone) VALUES (@Id, @FirstName, @LastName, @Address, @Phone)";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", user.Id, DbType.Int32);
@@ -28,13 +28,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM [dbo].[User] WHERE id = @Id";
+            var query = "DELETE FROM [dbo].[Users] WHERE id = @Id";
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task UpdateAsync(User user)
         {
-            var query = "UPDATE [dbo].[User] SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
+            var query = "UPDATE [dbo].[Users] SET FirstName = @FirstName, LastName = @LastName, Address = @Address, Phone = @Phone WHERE Id = @Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", user.Id, DbType.Int32);

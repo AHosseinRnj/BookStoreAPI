@@ -15,7 +15,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var query = "SELECT * FROM [dbo].[User] WHERE id = @Id";
+            var query = "SELECT * FROM [dbo].[Users] WHERE id = @Id";
             var user = await _dapperContext.Connection.QueryFirstAsync<User>(query, new { id }, _dapperContext.Transaction);
 
             return user;
@@ -23,10 +23,10 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrderItemsById(int id)
         {
-            var query = "SELECT B.Title, OB.Quantity, OB.Price, (OB.Quantity * OB.Price) AS TotalPrice " +
-                        "FROM [Order] O " +
-                        "JOIN OrderBook OB ON O.Id = OB.OrderId " +
-                        "JOIN Book B ON OB.BookId = B.Id " +
+            var query = "SELECT B.Title, OI.Quantity, OI.Price, (OI.Quantity * OI.Price) AS TotalPrice " +
+                        "FROM [Orders] O " +
+                        "JOIN OrderItems OI ON O.Id = OI.OrderId " +
+                        "JOIN Books B ON OI.BookId = B.Id " +
                         "WHERE O.UserId = @id " +
                         "ORDER BY B.Title";
             var listOfOrders = await _dapperContext.Connection.QueryAsync<GetUserOrderItemQueryResponse>(query, new { id }, _dapperContext.Transaction);
@@ -36,7 +36,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            var query = "SELECT * FROM [dbo].[User]";
+            var query = "SELECT * FROM [dbo].[Users]";
             var listOfUsers = await _dapperContext.Connection.QueryAsync<User>(query, null, _dapperContext.Transaction);
 
             return listOfUsers;

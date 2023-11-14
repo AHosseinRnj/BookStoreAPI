@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
         }
         public async Task AddAsync(Publisher publisher)
         {
-            var query = "INSERT INTO Publisher (id, name, Description) VALUES (@id, @Name, @Description)";
+            var query = "INSERT INTO Publishers (id, name, Description) VALUES (@id, @Name, @Description)";
 
             var parameters = new DynamicParameters();
             parameters.Add("id", publisher.Id, DbType.Int32);
@@ -26,13 +26,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM Publisher WHERE id = @Id";
+            var query = "DELETE FROM Publishers WHERE id = @Id";
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
         }
 
         public async Task UpdateAsync(Publisher publisher)
         {
-            var query = "UPDATE Publisher SET name = @Name, Description = @Description WHERE Id = @Id";
+            var query = "UPDATE Publishers SET name = @Name, Description = @Description WHERE Id = @Id";
             var parameters = new DynamicParameters();
             parameters.Add("Id", publisher.Id, DbType.Int32);
             parameters.Add("name", publisher.Name, DbType.String);

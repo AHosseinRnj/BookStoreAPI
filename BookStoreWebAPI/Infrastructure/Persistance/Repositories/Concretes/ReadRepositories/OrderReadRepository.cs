@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<Order> GetOrderByIdAsync(int id)
         {
-            var query = "SELECT * FROM [Order] WHERE Id = @Id";
+            var query = "SELECT * FROM [Orders] WHERE Id = @Id";
             var order = await _dapperContext.Connection.QueryFirstAsync<Order>(query, new { id }, _dapperContext.Transaction);
 
             return order;
@@ -22,7 +22,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Order>> GetOrdersAsync()
         {
-            var query = "SELECT * FROM [Order]";
+            var query = "SELECT * FROM [Orders]";
             var listOfOrders = await _dapperContext.Connection.QueryAsync<Order>(query, null, _dapperContext.Transaction);
 
             return listOfOrders;
