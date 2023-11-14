@@ -27,7 +27,7 @@ namespace Infrastructure.Services
                 _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to add an OrderBook.");
 
-                var orderbook = new OrderBook
+                var orderbook = new OrderItem
                 {
                     OrderId = request.orderId,
                     BookId = request.bookId,

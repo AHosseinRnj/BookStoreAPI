@@ -13,7 +13,7 @@ namespace Infrastructure.Persistance.Repositories
             _dapperContext = dapperContext;
         }
 
-        public async Task AddAsync(OrderBook orderBook)
+        public async Task AddAsync(OrderItem orderBook)
         {
             var query = "INSERT INTO [OrderBook] (OrderId, BookId, Quantity, Price) VALUES (@OrderId, @BookId, @Quantity, @Price)";
 
@@ -26,10 +26,10 @@ namespace Infrastructure.Persistance.Repositories
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
-        public async Task<IEnumerable<OrderBook>> GetOrderBooksAsync()
+        public async Task<IEnumerable<OrderItem>> GetOrderBooksAsync()
         {
             var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
-            var orderBooks = await _dapperContext.Connection.QueryAsync<OrderBook>(query, null, _dapperContext.Transaction);
+            var orderBooks = await _dapperContext.Connection.QueryAsync<OrderItem>(query, null, _dapperContext.Transaction);
 
             return orderBooks;
         }
