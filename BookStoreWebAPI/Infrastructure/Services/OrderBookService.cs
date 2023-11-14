@@ -20,7 +20,7 @@ namespace Infrastructure.Services
             _logger = LogManager.GetLogger(typeof(OrderBookService));
         }
 
-        public async Task AddAsync(CreateOrderBookCommand request)
+        public async Task AddAsync(CreateOrderItemCommand request)
         {
             try
             {

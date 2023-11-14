@@ -2,5 +2,5 @@
 
 namespace Application.Commands.CreateAuthor
 {
-    public record CreateAuthorCommand(int Id, string FirstName, string LastName, string Description) : IRequest<Unit>;
+    public record CreateAuthorCommand(string FirstName, string LastName, string Biography) : IRequest<Unit>;
 }

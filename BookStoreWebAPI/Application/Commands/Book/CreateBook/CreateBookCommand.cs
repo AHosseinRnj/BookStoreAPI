@@ -2,5 +2,5 @@
 
 namespace Application.Commands.CreateBook
 {
-    public record CreateBookCommand(int Id,string Title, string ISBN, double Price, int AuthorId, int PublisherId, int CategoryId) : IRequest<Unit>;
+    public record CreateBookCommand(string Title, int Quantity, string ISBN, double Price, int AuthorId, int PublisherId, int CategoryId) : IRequest<Unit>;
 }

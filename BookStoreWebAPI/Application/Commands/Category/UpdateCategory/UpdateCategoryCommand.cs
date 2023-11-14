@@ -2,5 +2,5 @@
 
 namespace Application.Commands.UpdateCategory
 {
-    public record UpdateCategoryCommand(int id, string name) : IRequest<Unit>;
+    public record UpdateCategoryCommand(int Id, UpdateCategoryDto Category) : IRequest<Unit>;
 }

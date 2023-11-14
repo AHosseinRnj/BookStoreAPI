@@ -13,7 +13,7 @@ namespace Application.Commands.DeleteAuthor
 
         public async Task<Unit> Handle(DeleteAuthorCommand request, CancellationToken cancellationToken)
         {
-            await _authorService.DeleteByIdAsync(request.id);
+            await _authorService.DeleteByIdAsync(request.Id);
             return Unit.Value;
         }
     }

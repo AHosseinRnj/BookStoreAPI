@@ -2,5 +2,5 @@
 
 namespace Application.Commands.DeleteAuthor
 {
-    public record DeleteAuthorCommand(int id) : IRequest<Unit>;
+    public record DeleteAuthorCommand(int Id) : IRequest<Unit>;
 }

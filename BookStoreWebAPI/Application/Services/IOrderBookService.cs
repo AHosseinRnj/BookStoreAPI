@@ -5,7 +5,7 @@ namespace Application.Services
 {
     public interface IOrderBookService
     {
-        Task AddAsync(CreateOrderBookCommand request);
+        Task AddAsync(CreateOrderItemCommand request);
         Task<IEnumerable<GetOrderBookQueryResponse>> GetOrderBooksAsync();
     }
 }

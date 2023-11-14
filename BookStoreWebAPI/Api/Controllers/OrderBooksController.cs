@@ -17,7 +17,7 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrderBooks(CreateOrderBookCommand request)
+        public async Task<IActionResult> AddOrderBooks(CreateOrderItemCommand request)
         {
             await _sender.Send(request);
             return Created("Successfull", request);

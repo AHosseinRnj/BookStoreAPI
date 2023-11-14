@@ -13,7 +13,7 @@ namespace Application.Commands.DeleteBook
 
         public async Task<Unit> Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            await _bookService.DeleteByIdAsync(request.id);
+            await _bookService.DeleteByIdAsync(request.Id);
             return Unit.Value;
         }
     }

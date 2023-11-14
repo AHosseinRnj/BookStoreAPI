@@ -2,5 +2,5 @@
 
 namespace Application.Commands.UpdateUser
 {
-    public record UpdateUserCommand(int id, UpdateUserRequest user) : IRequest<Unit>;
+    public record UpdateUserCommand(int Id, UpdateUserRequest User) : IRequest<Unit>;
 }

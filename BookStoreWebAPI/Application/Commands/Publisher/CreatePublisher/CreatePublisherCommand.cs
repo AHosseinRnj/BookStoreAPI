@@ -2,5 +2,5 @@
 
 namespace Application.Commands.CreatePublisher
 {
-    public record CreatePublisherCommand(int Id, string Name, string Biography) : IRequest<Unit>;
+    public record CreatePublisherCommand(string Name, string Description) : IRequest<Unit>;
 }

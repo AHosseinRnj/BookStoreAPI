@@ -2,5 +2,5 @@
 
 namespace Application.Commands.CreateCategory
 {
-    public record CreateCategoryCommand(int id, string name) : IRequest<Unit>;
+    public record CreateCategoryCommand(string Name) : IRequest<Unit>;
 }

@@ -2,5 +2,5 @@
 
 namespace Application.Commands.UpdateAuthor
 {
-    public record UpdateAuthorCommand(int id, string FirstName, string LastName, string Description) : IRequest<Unit>; 
+    public record UpdateAuthorCommand(int Id, UpdateAuthorDto Author) : IRequest<Unit>; 
 }

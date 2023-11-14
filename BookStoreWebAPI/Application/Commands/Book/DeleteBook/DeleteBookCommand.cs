@@ -2,5 +2,5 @@
 
 namespace Application.Commands.DeleteBook
 {
-    public record DeleteBookCommand(int id) : IRequest;
+    public record DeleteBookCommand(int Id) : IRequest;
 }
