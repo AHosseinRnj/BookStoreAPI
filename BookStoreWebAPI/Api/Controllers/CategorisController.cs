@@ -59,10 +59,10 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateCategory(UpdateCategoryCommand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto categoryDto)
         {
-            await _sender.Send(request);
+            await _sender.Send(new UpdateCategoryCommand(id, categoryDto));
             return NoContent();
         }
 

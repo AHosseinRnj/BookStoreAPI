@@ -59,10 +59,10 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdatePublisher(UpdatePublisherCommand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePublisher(int id, UpdatePublisherDto publisherDto)
         {
-            await _sender.Send(request);
+            await _sender.Send(new UpdatePublisherCommand(id, publisherDto));
             return NoContent();
         }
 

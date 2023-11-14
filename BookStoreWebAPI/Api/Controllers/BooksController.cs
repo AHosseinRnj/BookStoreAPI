@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddBook(CreateBookCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetBookById", new { id = request}, request);
+            return CreatedAtRoute("GetBookById", new { id = request }, request);
         }
 
         [HttpGet]
@@ -48,10 +48,10 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateBook(UpdateBookCommand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook(int id, UpdateBookDto bookDto)
         {
-            await _sender.Send(request);
+            await _sender.Send(new UpdateBookCommand(id, bookDto));
             return NoContent();
         }
 

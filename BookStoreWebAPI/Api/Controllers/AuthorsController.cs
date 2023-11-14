@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddAuthor(CreateAuthorCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetAuthorById", new { id = request}, request);
+            return CreatedAtRoute("GetAuthorById", new { id = request }, request);
         }
 
         [HttpGet]
@@ -59,10 +59,10 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateBook(UpdateAuthorCommand request)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAuthor(int id, UpdateAuthorDto authorDto)
         {
-            await _sender.Send(request);
+            await _sender.Send(new UpdateAuthorCommand(id, authorDto));
             return NoContent();
         }
 
