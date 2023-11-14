@@ -10,8 +10,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.ClearProviders();
-builder.Logging.AddLog4Net();
+builder.Logging.ClearProviders();;
 XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
 // Add services to the container.

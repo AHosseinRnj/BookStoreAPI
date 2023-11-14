@@ -4,7 +4,6 @@ using Application.Commands.UpdateBook;
 using Application.Query.GetBook;
 using Application.Repositpries;
 using Application.Services;
-using Azure.Core;
 using Domain.Entities;
 using log4net;
 
