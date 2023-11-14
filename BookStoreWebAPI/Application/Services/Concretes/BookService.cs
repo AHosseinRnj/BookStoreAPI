@@ -12,9 +12,9 @@ namespace Infrastructure.Services
     public class BookService : IBookService
     {
         private readonly ILog _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDapperUnitOfWork _unitOfWork;
         private readonly IBookRepository _bookRepository;
-        public BookService(IUnitOfWork unitOfWork, IBookRepository bookRepository)
+        public BookService(IDapperUnitOfWork unitOfWork, IBookRepository bookRepository)
         {
             _unitOfWork = unitOfWork;
             _bookRepository = bookRepository;

@@ -13,9 +13,9 @@ namespace Infrastructure.Services
     public class AuthorService : IAuthorService
     {
         private readonly ILog _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDapperUnitOfWork _unitOfWork;
         private readonly IAuthorRepository _authorRepository;
-        public AuthorService(IUnitOfWork unitOfWork, IAuthorRepository authorRepository)
+        public AuthorService(IDapperUnitOfWork unitOfWork, IAuthorRepository authorRepository)
         {
             _unitOfWork = unitOfWork;
             _authorRepository = authorRepository;

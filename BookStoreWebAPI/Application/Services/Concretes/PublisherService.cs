@@ -13,9 +13,9 @@ namespace Infrastructure.Services
     public class PublisherService : IPublisherService
     {
         private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
+        private IDapperUnitOfWork _unitOfWork;
         private readonly IPublisherRepository _publisherRepository;
-        public PublisherService(IUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
+        public PublisherService(IDapperUnitOfWork unitOfWork, IPublisherRepository publisherRepository)
         {
             _unitOfWork = unitOfWork;
             _publisherRepository = publisherRepository;

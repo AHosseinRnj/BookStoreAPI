@@ -2,10 +2,10 @@
 
 namespace Infrastructure.Persistance
 {
-    public class UnitOfWork : IUnitOfWork
+    public class DapperUnitOfWork : IDapperUnitOfWork
     {
         private readonly DapperContext DapperContext;
-        public UnitOfWork(DapperContext dapperContext)
+        public DapperUnitOfWork(DapperContext dapperContext)
         {
             DapperContext = dapperContext;
         }

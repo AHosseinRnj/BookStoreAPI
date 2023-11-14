@@ -11,9 +11,9 @@ namespace Infrastructure.Services
     public class OrderService : IOrderService
     {
         private readonly ILog _logger;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IDapperUnitOfWork _unitOfWork;
         private readonly IOrderRepository _orderRepository;
-        public OrderService(IUnitOfWork unitOfWork, IOrderRepository orderRepository)
+        public OrderService(IDapperUnitOfWork unitOfWork, IOrderRepository orderRepository)
         {
             _unitOfWork = unitOfWork;
             _orderRepository = orderRepository;

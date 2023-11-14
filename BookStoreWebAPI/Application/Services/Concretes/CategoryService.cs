@@ -13,9 +13,9 @@ namespace Infrastructure.Services
     public class CategoryService : ICategoryService
     {
         private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
+        private IDapperUnitOfWork _unitOfWork;
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(IUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+        public CategoryService(IDapperUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;

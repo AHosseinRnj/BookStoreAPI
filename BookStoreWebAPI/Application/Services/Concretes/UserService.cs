@@ -13,9 +13,9 @@ namespace Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly ILog _logger;
-        private IUnitOfWork _unitOfWork;
+        private IDapperUnitOfWork _unitOfWork;
         private readonly IUserRepository _userRepository;
-        public UserService(IUnitOfWork unitOfWork, IUserRepository userRepository)
+        public UserService(IDapperUnitOfWork unitOfWork, IUserRepository userRepository)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;

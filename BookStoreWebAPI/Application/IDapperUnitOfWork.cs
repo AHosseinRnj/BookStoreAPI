@@ -1,6 +1,6 @@
 ﻿namespace Application
 {
-    public interface IUnitOfWork
+    public interface IDapperUnitOfWork
     {
         void BeginTransaction();
         void Rollback();
