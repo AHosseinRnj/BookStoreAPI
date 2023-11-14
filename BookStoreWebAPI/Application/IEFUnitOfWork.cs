@@ -1,16 +1,16 @@
-﻿using Application.Repositpries;
+﻿using Application.Repositories;
 
 namespace Application
 {
     public interface IEFUnitOfWork : IDisposable
     {
-        public IBookRepository BookRepository { get; }
-        public IAuthorRepository AuthorRepository { get; }
-        public ICategoryRepository CategoryRepository { get; }
-        public IOrderItemRepository OrderItemRepository { get; }
-        public IOrderRepository OrderRepository { get; }
-        public IPublisherRepository PublisherRepository { get; }
-        public IUserRepository UserRepository { get; }
+        public IBookWriteRepository BookRepository { get; }
+        public IAuthorWriteRepository AuthorRepository { get; }
+        public ICategoryWriteRepository CategoryRepository { get; }
+        public IOrderItemWriteRepository OrderItemRepository { get; }
+        public IOrderItemWriteRepository OrderRepository { get; }
+        public IPublisherWriteRepository PublisherRepository { get; }
+        public IUserWriteRepository UserRepository { get; }
 
         void Complete();
     }

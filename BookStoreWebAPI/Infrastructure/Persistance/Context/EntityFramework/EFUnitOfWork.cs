@@ -1,5 +1,4 @@
-﻿using Application.Repositpries;
-using Infrastructure.Persistance.Repositories;
+﻿using Application.Repositories;
 
 namespace Infrastructure.Persistance
 {
@@ -7,13 +6,13 @@ namespace Infrastructure.Persistance
     {
         private readonly EFContext _context;
 
-        public IBookRepository BookRepository { get; private set; }
-        public IAuthorRepository AuthorRepository { get; private set; }
-        public ICategoryRepository CategoryRepository { get; private set; }
-        public IOrderItemRepository OrderItemRepository { get; private set; }
-        public IOrderRepository OrderRepository { get; private set; }
-        public IPublisherRepository PublisherRepository { get; private set; }
-        public IUserRepository UserRepository { get; private set; }
+        public IBookWriteRepository BookRepository { get; private set; }
+        public IAuthorWriteRepository AuthorRepository { get; private set; }
+        public ICategoryWriteRepository CategoryRepository { get; private set; }
+        public IOrderItemWriteRepository OrderItemRepository { get; private set; }
+        public IOrderWriteRepository OrderRepository { get; private set; }
+        public IPublisherWriteRepository PublisherRepository { get; private set; }
+        public IUserWriteRepository UserRepository { get; private set; }
 
         public EFUnitOfWork(EFContext context)
         {

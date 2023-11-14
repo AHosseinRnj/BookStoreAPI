@@ -16,4 +16,9 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Concretes\WriteServices\" />
+    <Folder Include="Services\Concretes\ReadServices\" />
+  </ItemGroup>
+
 </Project>
