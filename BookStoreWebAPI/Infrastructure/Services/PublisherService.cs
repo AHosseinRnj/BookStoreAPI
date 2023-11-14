@@ -31,9 +31,8 @@ namespace Infrastructure.Services
 
                 var publisher = new Publisher
                 {
-                    Id = request.Id,
                     Name = request.Name,
-                    Biography = request.Biography
+                    Description = request.Description
                 };
 
                 await _publisherRepository.AddAsync(publisher);
@@ -122,7 +121,7 @@ namespace Infrastructure.Services
                 result = new GetPublisherQueryResponse
                 {
                     Name = publisher.Name,
-                    Biography = publisher.Biography
+                    Description = publisher.Description
                 };
             }
             catch (Exception ex)
@@ -154,7 +153,7 @@ namespace Infrastructure.Services
                 result = listOfPublishers.Select(p => new GetPublisherQueryResponse
                 {
                     Name = p.Name,
-                    Biography = p.Biography
+                    Description = p.Description
                 }).ToList();
             }
             catch (Exception ex)
@@ -182,8 +181,8 @@ namespace Infrastructure.Services
                 var publisher = new Publisher
                 {
                     Id = request.Id,
-                    Name = request.Name,
-                    Biography = request.Biography
+                    Name = request.Publisher.Name,
+                    Description = request.Publisher.Description
                 };
 
                 await _publisherRepository.UpdateAsync(publisher);

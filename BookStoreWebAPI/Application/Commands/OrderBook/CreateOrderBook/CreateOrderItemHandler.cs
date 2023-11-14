@@ -5,8 +5,8 @@ namespace Application.Commands.CreateOrderBook
 {
     public class CreateOrderItemHandler : IRequestHandler<CreateOrderItemCommand, Unit>
     {
-        private readonly IOrderBookService _orderBookService;
-        public CreateOrderItemHandler(IOrderBookService orderBookService)
+        private readonly IOrderItemService _orderBookService;
+        public CreateOrderItemHandler(IOrderItemService orderBookService)
         {
             _orderBookService = orderBookService;
         }

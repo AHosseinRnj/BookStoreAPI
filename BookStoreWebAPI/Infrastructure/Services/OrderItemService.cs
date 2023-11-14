@@ -8,16 +8,16 @@ using log4net;
 
 namespace Infrastructure.Services
 {
-    public class OrderBookService : IOrderBookService
+    public class OrderItemService : IOrderItemService
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
         private readonly IOrderItemRepository _orderBookRepository;
-        public OrderBookService(IUnitOfWork unitOfWork, IOrderItemRepository orderBookRepository)
+        public OrderItemService(IUnitOfWork unitOfWork, IOrderItemRepository orderBookRepository)
         {
             _unitOfWork = unitOfWork;
             _orderBookRepository = orderBookRepository;
-            _logger = LogManager.GetLogger(typeof(OrderBookService));
+            _logger = LogManager.GetLogger(typeof(OrderItemService));
         }
 
         public async Task AddAsync(CreateOrderItemCommand request)
@@ -29,9 +29,9 @@ namespace Infrastructure.Services
 
                 var orderbook = new OrderItem
                 {
-                    OrderId = request.orderId,
-                    BookId = request.bookId,
-                    Quantity = request.quantity,
+                    OrderId = request.OrderId,
+                    BookId = request.BookId,
+                    Quantity = request.Quantity,
                     Price = request.Price
                 };
 
@@ -60,7 +60,7 @@ namespace Infrastructure.Services
                 _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get all OrderBooks");
 
-                var orderBooks = await _orderBookRepository.GetOrderBooksAsync();
+                var orderBooks = await _orderBookRepository.GetOrderItemAsync();
 
                 result = orderBooks.Select(ob => new GetOrderItemQueryResponse
                 {

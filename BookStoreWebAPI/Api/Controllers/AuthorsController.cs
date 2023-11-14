@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddAuthor(CreateAuthorCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetAuthorById", new { id = request.Id }, request);
+            return CreatedAtRoute("GetAuthorById", new { id = request}, request);
         }
 
         [HttpGet]

@@ -28,10 +28,9 @@ namespace Infrastructure.Services
                 _logger.Info("Received a request to add an Order.");
 
                 var order = new Order
-                {
-                    Id = request.id,
-                    UserId = request.userId,
-                    OrderDate = request.orderDate
+                {                   
+                    UserId = request.UserId,
+                    OrderDate = request.OrderDate
                 };
 
                 await _orderRepository.AddAsync(order);

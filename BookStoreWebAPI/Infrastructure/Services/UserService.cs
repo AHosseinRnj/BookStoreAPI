@@ -31,9 +31,8 @@ namespace Infrastructure.Services
 
                 var user = new User
                 {
-                    Id = request.id,
-                    FirstName = request.firstName,
-                    LastName = request.lastName,
+                    FirstName = request.FirstName,
+                    LastName = request.LastName,
                     Address = request.Address,
                     Phone = request.Phone
                 };
@@ -119,7 +118,7 @@ namespace Infrastructure.Services
                 _unitOfWork.BeginTransaction();
                 _logger.Info("Received a request to get an User's Orders by ID: " + id);
 
-                listOfOrders = await _userRepository.GetUserOrdersById(id);
+                listOfOrders = await _userRepository.GetUserOrderItemsById(id);
             }
             catch (Exception ex)
             {
@@ -177,11 +176,10 @@ namespace Infrastructure.Services
 
                 var user = new User
                 {
-                    Id = request.id,
-                    FirstName = request.user.FirstName,
-                    LastName = request.user.LastName,
-                    Address = request.user.Address,
-                    Phone = request.user.Phone
+                    FirstName = request.User.FirstName,
+                    LastName = request.User.LastName,
+                    Address = request.User.Address,
+                    Phone = request.User.Phone
                 };
 
                 await _userRepository.UpdateAsync(user);

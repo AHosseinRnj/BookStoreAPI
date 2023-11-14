@@ -31,10 +31,10 @@ namespace Infrastructure.Services
 
                 var book = new Book
                 {
-                    Id = request.Id,
                     Title = request.Title,
                     AuthorId = request.AuthorId,
                     CategoryId = request.CategoryId,
+                    Quantity = request.Quantity,
                     ISBN = request.ISBN,
                     Price = request.Price,
                     PublisherId = request.PublisherId,
@@ -154,13 +154,13 @@ namespace Infrastructure.Services
 
                 var book = new Book
                 {
-                    Id = request.id,
-                    AuthorId = request.AuthorId,
-                    CategoryId = request.CategoryId,
-                    PublisherId = request.PublisherId,
-                    ISBN = request.ISBN,
-                    Price = request.price,
-                    Title = request.Title
+                    Id = request.Id,
+                    AuthorId = request.Book.AuthorId,
+                    CategoryId = request.Book.CategoryId,
+                    PublisherId = request.Book.PublisherId,
+                    ISBN = request.Book.ISBN,
+                    Price = request.Book.Price,
+                    Title = request.Book.Title
                 };
 
                 await _bookRepository.UpdateAsync(book);

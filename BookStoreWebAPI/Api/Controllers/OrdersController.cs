@@ -21,7 +21,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddOrder(CreateOrderCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetOrderById", new { id = request.id }, request);
+            return CreatedAtRoute("GetOrderById", new { id = request }, request);
         }
 
         [HttpGet]

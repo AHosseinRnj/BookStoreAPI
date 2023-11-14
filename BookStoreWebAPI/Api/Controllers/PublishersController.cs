@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddPublisher(CreatePublisherCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetPublisherById", new { id = request.Id }, request);
+            return CreatedAtRoute("GetPublisherById", new { id = request }, request);
         }
 
         [HttpGet]

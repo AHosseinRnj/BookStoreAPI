@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddBook(CreateBookCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetBookById", new { id = request.Id }, request);
+            return CreatedAtRoute("GetBookById", new { id = request}, request);
         }
 
         [HttpGet]

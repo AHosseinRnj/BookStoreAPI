@@ -23,7 +23,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddCategory(CreateCategoryCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetCategoryById", new { id = request.id }, request);
+            return CreatedAtRoute("GetCategoryById", new { id = request }, request);
         }
 
         [HttpGet]

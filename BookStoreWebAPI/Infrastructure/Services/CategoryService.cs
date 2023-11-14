@@ -31,8 +31,7 @@ namespace Infrastructure.Services
 
                 var category = new Category
                 {
-                    Id = request.id,
-                    Name = request.name
+                    Name = request.Name
                 };
 
                 await _categoryRepository.AddAsync(category);
@@ -176,8 +175,8 @@ namespace Infrastructure.Services
 
                 var category = new Category
                 {
-                    Id = request.id,
-                    Name = request.name
+                    Id = request.Id,
+                    Name = request.Category.Name
                 };
 
                 await _categoryRepository.UpdateAsync(category);

@@ -15,13 +15,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Author author)
         {
-            var query = "INSERT INTO Author (Id, FirstName, LastName, Description) VALUES (@Id, @FirstName, @LastName, @Description)";
+            var query = "INSERT INTO Author (Id, FirstName, LastName, Biography) VALUES (@Id, @FirstName, @LastName, @Biography)";
 
             var parameters = new DynamicParameters();
             parameters.Add("Id", author.Id, DbType.Int32);
             parameters.Add("FirstName", author.FirstName, DbType.String);
             parameters.Add("LastName", author.LastName, DbType.String);
-            parameters.Add("Description", author.Description, DbType.String);
+            parameters.Add("Biography", author.Biography, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
@@ -57,13 +57,13 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(Author author)
         {
-            var query = "UPDATE Author SET firstname = @FirstName, lastname = @LastName, description = @Description WHERE Id=@Id";
+            var query = "UPDATE Author SET firstname = @FirstName, lastname = @LastName, Biography = @Biography WHERE Id=@Id";
 
             var parameters = new DynamicParameters();
             parameters.Add("id", author.Id, DbType.Int32);
             parameters.Add("FirstName", author.FirstName, DbType.String);
             parameters.Add("LastName", author.LastName, DbType.String);
-            parameters.Add("Description", author.Description, DbType.String);
+            parameters.Add("Biography", author.Biography, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }

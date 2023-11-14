@@ -24,7 +24,7 @@ namespace Api.Controllers
         public async Task<IActionResult> AddUser(CreateUserCommand request)
         {
             await _sender.Send(request);
-            return CreatedAtRoute("GetUserById", new { id = request.id }, request);
+            return CreatedAtRoute("GetUserById", new { id = request }, request);
         }
 
         [HttpGet]

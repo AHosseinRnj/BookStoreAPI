@@ -31,10 +31,9 @@ namespace Infrastructure.Services
 
                 var author = new Author
                 {
-                    Id = request.Id,
                     FirstName = request.FirstName,
                     LastName = request.LastName,
-                    Description = request.Description
+                    Biography = request.Biography
                 };
 
                 await _authorRepository.AddAsync(author);
@@ -125,7 +124,7 @@ namespace Infrastructure.Services
                 {
                     FirstName = author.FirstName,
                     LastName = author.LastName,
-                    Description = author.Description
+                    Biography = author.Biography
                 };
             }
             catch (Exception ex)
@@ -158,7 +157,7 @@ namespace Infrastructure.Services
                 {
                     FirstName = a.FirstName,
                     LastName = a.LastName,
-                    Description = a.Description
+                    Biography = a.Biography
                 }).ToList();
             }
             catch (Exception ex)
@@ -185,10 +184,10 @@ namespace Infrastructure.Services
 
                 var author = new Author
                 {
-                    Id = request.id,
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Description = request.Description
+                    Id = request.Id,
+                    FirstName = request.Author.FirstName,
+                    LastName = request.Author.LastName,
+                    Biography = request.Author.Biography
                 };
 
                 await _authorRepository.UpdateAsync(author);

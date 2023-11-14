@@ -15,12 +15,12 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task AddAsync(Publisher publisher)
         {
-            var query = "INSERT INTO Publisher (id, name, biography) VALUES (@id, @Name, @Biography)";
+            var query = "INSERT INTO Publisher (id, name, Description) VALUES (@id, @Name, @Description)";
 
             var parameters = new DynamicParameters();
             parameters.Add("id", publisher.Id, DbType.Int32);
             parameters.Add("name", publisher.Name, DbType.String);
-            parameters.Add("biography", publisher.Biography, DbType.String);
+            parameters.Add("Description", publisher.Description, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
@@ -57,11 +57,11 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task UpdateAsync(Publisher publisher)
         {
-            var query = "UPDATE Publisher SET name = @Name, biography = @Biography WHERE Id = @Id";
+            var query = "UPDATE Publisher SET name = @Name, Description = @Description WHERE Id = @Id";
             var parameters = new DynamicParameters();
             parameters.Add("Id", publisher.Id, DbType.Int32);
             parameters.Add("name", publisher.Name, DbType.String);
-            parameters.Add("biography", publisher.Biography, DbType.String);
+            parameters.Add("Description", publisher.Description, DbType.String);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
