@@ -14,7 +14,7 @@ namespace Infrastructure.Extensions
         {
             var connectionString = configuration.GetConnectionString("Default");
             services.AddDbContext<EFContext>(option => option.UseSqlServer(connectionString, b => b.MigrationsAssembly("WebAPI")));
-            services.AddScoped<EFContext>();
+            services.AddScoped<IEFUnitOfWork, EFUnitOfWork>();
 
             services.AddScoped<DapperContext>();
             services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
