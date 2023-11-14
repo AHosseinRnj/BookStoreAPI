@@ -7,8 +7,8 @@ namespace Application.Query.Author.GetAuthorBooks
 {
     public class GetAuthorBooksHandler : IRequestHandler<GetAuthorBooksQuery, IEnumerable<GetBookQueryResponse>>
     {
-        private readonly IAuthorService _authorService;
-        public GetAuthorBooksHandler(IAuthorService authorService)
+        private readonly IAuthorReadService _authorService;
+        public GetAuthorBooksHandler(IAuthorReadService authorService)
         {
             _authorService = authorService;
         }

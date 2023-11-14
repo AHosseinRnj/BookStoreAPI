@@ -5,8 +5,8 @@ namespace Application.Query.GetPublisher
 {
     public class GetPublisherQueryHandler : IRequestHandler<GetPublisherQuery, GetPublisherQueryResponse>
     {
-        private readonly IPublisherService _publisherService;
-        public GetPublisherQueryHandler(IPublisherService publisherService)
+        private readonly IPublisherReadService _publisherService;
+        public GetPublisherQueryHandler(IPublisherReadService publisherService)
         {
             _publisherService = publisherService;
         }

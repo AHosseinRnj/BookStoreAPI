@@ -5,8 +5,8 @@ namespace Application.Query.GetOrder
 {
     public class GetOrderQueryHandler : IRequestHandler<GetOrderQuery, GetOrderQueryResponse>
     {
-        private readonly IOrderService _orderService;
-        public GetOrderQueryHandler(IOrderService orderService)
+        private readonly IOrderReadService _orderService;
+        public GetOrderQueryHandler(IOrderReadService orderService)
         {
             _orderService = orderService;
         }

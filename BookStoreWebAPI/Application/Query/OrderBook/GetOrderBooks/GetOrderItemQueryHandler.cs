@@ -6,8 +6,8 @@ namespace Application.Query.GetOrderBooks
 {
     public class GetOrderItemQueryHandler : IRequestHandler<GetOrderItemQuery, IEnumerable<GetOrderItemQueryResponse>>
     {
-        private readonly IOrderItemService _orderBookService;
-        public GetOrderItemQueryHandler(IOrderItemService orderBookService)
+        private readonly IOrderItemReadService _orderBookService;
+        public GetOrderItemQueryHandler(IOrderItemReadService orderBookService)
         {
             _orderBookService = orderBookService;
         }

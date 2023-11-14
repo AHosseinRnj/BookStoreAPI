@@ -5,8 +5,8 @@ namespace Application.Query.GetUser
 {
     public class GetUserQueryHandler : IRequestHandler<GetUserQuery, GetUserQueryResponse>
     {
-        private readonly IUserService _userService;
-        public GetUserQueryHandler(IUserService userService)
+        private readonly IUserReadService _userService;
+        public GetUserQueryHandler(IUserReadService userService)
         {
             _userService = userService;
         }

@@ -6,8 +6,8 @@ namespace Application.Query.GetCategories
 {
     public class GetCategoriesQueryHandler : IRequestHandler<GetCategoriesQuery, IEnumerable<GetCategoryQueryResponse>>
     {
-        private readonly ICategoryService _categoryRepository;
-        public GetCategoriesQueryHandler(ICategoryService categoryRepository)
+        private readonly ICategoryReadService _categoryRepository;
+        public GetCategoriesQueryHandler(ICategoryReadService categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

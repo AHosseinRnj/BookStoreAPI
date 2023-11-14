@@ -5,8 +5,8 @@ namespace Application.Query.GetUserOrders
 {
     public class GetUserOrderItemQueryHandler : IRequestHandler<GetUserOrderItemQuery, IEnumerable<GetUserOrderItemQueryResponse>>
     {
-        private readonly IUserService _userService;
-        public GetUserOrderItemQueryHandler(IUserService userService)
+        private readonly IUserReadService _userService;
+        public GetUserOrderItemQueryHandler(IUserReadService userService)
         {
             _userService = userService;
         }

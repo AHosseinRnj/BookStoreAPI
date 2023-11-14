@@ -6,8 +6,8 @@ namespace Application.Query.GetBooks
 {
     public class GetBooksQueryHandler : IRequestHandler<GetBooksQuery, IEnumerable<GetBookQueryResponse>>
     {
-        private readonly IBookService _bookService;
-        public GetBooksQueryHandler(IBookService bookService)
+        private readonly IBookReadService _bookService;
+        public GetBooksQueryHandler(IBookReadService bookService)
         {
             _bookService = bookService;
         }

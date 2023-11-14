@@ -5,8 +5,8 @@ namespace Application.Query.Author.GetAuthor
 {
     public class GetAuthorQueryHandler : IRequestHandler<GetAuthorQuery, GetAuthorQueryResponse>
     {
-        private readonly IAuthorService _authorService;
-        public GetAuthorQueryHandler(IAuthorService authorService)
+        private readonly IAuthorReadService _authorService;
+        public GetAuthorQueryHandler(IAuthorReadService authorService)
         {
             _authorService = authorService;
         }

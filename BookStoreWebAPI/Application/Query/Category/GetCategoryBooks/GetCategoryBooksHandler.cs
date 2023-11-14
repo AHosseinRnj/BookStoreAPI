@@ -6,8 +6,8 @@ namespace Application.Query.GetCategoryBooks
 {
     public class GetCategoryBooksHandler : IRequestHandler<GetCategoryBooksQuery, IEnumerable<GetBookQueryResponse>>
     {
-        private readonly ICategoryService _categoryRepository;
-        public GetCategoryBooksHandler(ICategoryService categoryRepository)
+        private readonly ICategoryReadService _categoryRepository;
+        public GetCategoryBooksHandler(ICategoryReadService categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }
