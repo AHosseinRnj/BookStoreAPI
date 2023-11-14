@@ -19,94 +19,43 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetCategoryQueryResponse>> GetCategoriesAsync()
         {
-            List<GetCategoryQueryResponse> result;
+            var listOfCategories = await _categoryRepository.GetCategoriesAsync();
 
-            try
+            var result = listOfCategories.Select(c => new GetCategoryQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get Categories");
+                Id = c.Id,
+                Name = c.Name
+            }).ToList();
 
-                var listOfCategories = await _categoryRepository.GetCategoriesAsync();
-
-                result = listOfCategories.Select(c => new GetCategoryQueryResponse
-                {
-                    Name = c.Name
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting Categories: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Categories retrieved successfully.");
             return result;
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetCategoryBooksAsync(int id)
         {
-            List<GetBookQueryResponse> result;
+            var listOfBooks = await _categoryRepository.GetCategoryBooksAsync(id);
 
-            try
+            var result = listOfBooks.Select(b => new GetBookQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a Category's Books by ID: " + id);
-                var listOfBooks = await _categoryRepository.GetCategoryBooksAsync(id);
+                Id = b.Id,
+                Title = b.Title,
+                ISBN = b.ISBN,
+                Price = b.Price,
+                Quantity = b.Quantity,
+            }).ToList();
 
-                result = listOfBooks.Select(b => new GetBookQueryResponse
-                {
-                    Title = b.Title,
-                    ISBN = b.ISBN,
-                    Price = b.Price
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting an Category's Books: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category's Books retrieved successfully.");
             return result;
         }
 
         public async Task<GetCategoryQueryResponse> GetCategoryByIdAsync(int id)
         {
-            GetCategoryQueryResponse result;
+            var category = await _categoryRepository.GetCategoryByIdAsync(id);
 
-            try
+            var result = new GetCategoryQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a Category by ID: " + id);
-                var category = await _categoryRepository.GetCategoryByIdAsync(id);
+                Id = category.Id,
+                Name = category.Name
+            };
 
-                result = new GetCategoryQueryResponse
-                {
-                    Name = category.Name
-                };
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting a Category: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category retrieved successfully.");
             return result;
         }
     }

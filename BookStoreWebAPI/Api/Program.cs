@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Diagnostics;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.ClearProviders();;
+builder.Logging.ClearProviders();
+builder.Logging.AddLog4Net();
 XmlConfigurator.Configure(new FileInfo("log4net.config"));
 
 // Add services to the container.
@@ -34,9 +35,11 @@ app.UseExceptionHandler(option =>
     {
         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
         var ex = context.Features.Get<IExceptionHandlerFeature>();
+
         if (ex != null)
         {
             await context.Response.WriteAsync(ex.Error.Message);
+
         }
     });
 });

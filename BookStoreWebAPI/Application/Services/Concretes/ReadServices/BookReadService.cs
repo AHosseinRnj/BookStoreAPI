@@ -18,67 +18,33 @@ namespace Application.Services
 
         public async Task<GetBookQueryResponse> GetBookByIdAsync(int id)
         {
-            GetBookQueryResponse result;
+            var book = await _bookRepository.GetBookByIdAsync(id);
 
-            try
+            var result = new GetBookQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a book by ID: " + id);
+                Id = book.Id,
+                Title = book.Title,
+                Price = book.Price,
+                ISBN = book.ISBN,
+                Quantity = book.Quantity,
+            };
 
-                var book = await _bookRepository.GetBookByIdAsync(id);
-
-                result = new GetBookQueryResponse
-                {
-                    Title = book.Title,
-                    Price = book.Price,
-                    ISBN = book.ISBN
-                };
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting a book: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Book retrieved successfully.");
             return result;
         }
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetBooksAsync()
         {
-            List<GetBookQueryResponse> result;
+            var listOfBooks = await _bookRepository.GetBooksAsync();
 
-            try
+            var result = listOfBooks.Select(b => new GetBookQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get all books");
+                Id = b.Id,
+                Title = b.Title,
+                Price = b.Price,
+                ISBN = b.ISBN,
+                Quantity = b.Quantity,
+            }).ToList();
 
-                var listOfBooks = await _bookRepository.GetBooksAsync();
-
-                result = listOfBooks.Select(b => new GetBookQueryResponse
-                {
-                    Title = b.Title,
-                    ISBN = b.ISBN,
-                    Price = b.Price
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting Books: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Books retrieved successfully.");
             return result;
         }
     }

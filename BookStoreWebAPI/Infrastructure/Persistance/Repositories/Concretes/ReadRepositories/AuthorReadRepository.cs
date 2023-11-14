@@ -14,7 +14,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Book>> GetAuthorBooksAsync(int id)
         {
-            var query = "SELECT Book.Title, Book.ISBN, Book.Price FROM Books JOIN Authors ON Book.AuthorId = Author.Id WHERE Author.Id = @AutId";
+            var query = "SELECT * FROM Books JOIN Authors ON Books.AuthorId = Authors.Id WHERE Authors.Id = @AutId";
             var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, new { AutId = id }, _dapperContext.Transaction);
 
             return listOfBooks;

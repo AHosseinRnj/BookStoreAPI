@@ -19,98 +19,45 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetBookQueryResponse>> GetPublisherBooksAsync(int id)
         {
-            IEnumerable<GetBookQueryResponse> result;
+            var listOfBooks = await _publisherRepository.GetPublisherBooksAsync(id);
 
-            try
+            var result = listOfBooks.Select(b => new GetBookQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a Publisher's Books by ID: " + id);
+                Id = b.Id,
+                Title = b.Title,
+                ISBN = b.ISBN,
+                Price = b.Price,
+                Quantity = b.Quantity
+            }).ToList();
 
-                var listOfBooks = await _publisherRepository.GetPublisherBooksAsync(id);
-
-                result = listOfBooks.Select(b => new GetBookQueryResponse
-                {
-                    Title = b.Title,
-                    ISBN = b.ISBN,
-                    Price = b.Price
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting an Publisher's Books: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher's Books retrieved successfully.");
             return result;
         }
 
         public async Task<GetPublisherQueryResponse> GetPublisherByIdAsync(int id)
         {
-            GetPublisherQueryResponse result;
+            var publisher = await _publisherRepository.GetPublisherByIdAsync(id);
 
-            try
+            var result = new GetPublisherQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a Publisher by ID: " + id);
+                Id = publisher.Id,
+                Name = publisher.Name,
+                Description = publisher.Description
+            };
 
-                var publisher = await _publisherRepository.GetPublisherByIdAsync(id);
-
-                result = new GetPublisherQueryResponse
-                {
-                    Name = publisher.Name,
-                    Description = publisher.Description
-                };
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting a Publisher: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher retrieved successfully.");
             return result;
         }
 
         public async Task<IEnumerable<GetPublisherQueryResponse>> GetPublishersAsync()
         {
-            List<GetPublisherQueryResponse> result;
+            var listOfPublishers = await _publisherRepository.GetPublishersAsync();
 
-            try
+            var result = listOfPublishers.Select(p => new GetPublisherQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get Publishers");
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description
+            }).ToList();
 
-                var listOfPublishers = await _publisherRepository.GetPublishersAsync();
-
-                result = listOfPublishers.Select(p => new GetPublisherQueryResponse
-                {
-                    Name = p.Name,
-                    Description = p.Description
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting Publishers: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publishers retrieved successfully.");
             return result;
         }
     }

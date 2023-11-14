@@ -19,92 +19,40 @@ namespace Application.Services
 
         public async Task<GetUserQueryResponse> GetUserByIdAsync(int id)
         {
-            GetUserQueryResponse result;
+            var user = await _userRepository.GetUserByIdAsync(id);
 
-            try
+            var result = new GetUserQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get a User by ID: " + id);
+                Id = id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Phone = user.Phone,
+                Address = user.Address,
+            };
 
-                var user = await _userRepository.GetUserByIdAsync(id);
-
-                result = new GetUserQueryResponse
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Phone = user.Phone
-                };
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting a User: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("User retrieved successfully.");
             return result;
         }
 
         public async Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrdersById(int id)
         {
-            IEnumerable<GetUserOrderItemQueryResponse> listOfOrders;
+            var listOfOrders = await _userRepository.GetUserOrderItemsById(id);
 
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get an User's Orders by ID: " + id);
-
-                listOfOrders = await _userRepository.GetUserOrderItemsById(id);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting an User's Orders: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("User's Orders retrieved successfully.");
             return listOfOrders;
         }
 
         public async Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync()
         {
-            List<GetUserQueryResponse> result;
+            var listOfUsers = await _userRepository.GetUsersAsync();
 
-            try
+            var result = listOfUsers.Select(u => new GetUserQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get all Users");
-                var listOfUsers = await _userRepository.GetUsersAsync();
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Phone = u.Phone,
+                Address = u.Address
+            }).ToList();
 
-                result = listOfUsers.Select(u => new GetUserQueryResponse
-                {
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Phone = u.Phone
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting User: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Users retrieved successfully.");
             return result;
         }
     }

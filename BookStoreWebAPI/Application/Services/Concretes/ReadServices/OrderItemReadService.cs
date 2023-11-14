@@ -18,34 +18,17 @@ namespace Application.Services
 
         public async Task<IEnumerable<GetOrderItemQueryResponse>> GetOrderBooksAsync()
         {
-            IEnumerable<GetOrderItemQueryResponse> result;
+            var orderBooks = await _orderBookRepository.GetOrderItemAsync();
 
-            try
+            var result = orderBooks.Select(oi => new GetOrderItemQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get all OrderBooks");
+                Id = oi.Id,
+                BookId = oi.BookId,
+                Price = oi.Price,
+                Quantity = oi.Quantity,
+                OrderId = oi.OrderId
+            });
 
-                var orderBooks = await _orderBookRepository.GetOrderItemAsync();
-
-                result = orderBooks.Select(ob => new GetOrderItemQueryResponse
-                {
-                    BookId = ob.BookId,
-                    Price = ob.Price,
-                    Quantity = ob.Quantity,
-                });
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting OrderBooks: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("OrderBooks retrieved successfully.");
             return result;
         }
     }

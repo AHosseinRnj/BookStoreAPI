@@ -15,7 +15,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<User> GetUserByIdAsync(int id)
         {
-            var query = "SELECT * FROM [dbo].[Users] WHERE id = @Id";
+            var query = "SELECT * FROM [dbo].[User] WHERE id = @Id";
             var user = await _dapperContext.Connection.QueryFirstAsync<User>(query, new { id }, _dapperContext.Transaction);
 
             return user;
@@ -36,7 +36,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<User>> GetUsersAsync()
         {
-            var query = "SELECT * FROM [dbo].[Users]";
+            var query = "SELECT * FROM [dbo].[User]";
             var listOfUsers = await _dapperContext.Connection.QueryAsync<User>(query, null, _dapperContext.Transaction);
 
             return listOfUsers;

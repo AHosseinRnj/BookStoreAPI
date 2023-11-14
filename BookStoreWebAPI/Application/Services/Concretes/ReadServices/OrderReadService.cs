@@ -18,63 +18,29 @@ namespace Application.Services
 
         public async Task<GetOrderQueryResponse> GetOrderByIdAsync(int id)
         {
-            GetOrderQueryResponse result;
+            var order = await _orderRepository.GetOrderByIdAsync(id);
 
-            try
+            var result = new GetOrderQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get an Order by ID: " + id);
+                Id = order.Id,
+                UserId = order.UserId,
+                OrderDate = order.OrderDate,
+            };
 
-                var order = await _orderRepository.GetOrderByIdAsync(id);
-
-                result = new GetOrderQueryResponse
-                {
-                    OrderDate = order.OrderDate,
-                };
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting an Order: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Order retrieved successfully.");
             return result;
         }
 
         public async Task<IEnumerable<GetOrderQueryResponse>> GetOrdersAsync()
         {
-            List<GetOrderQueryResponse> result;
+            var listOfOrders = await _orderRepository.GetOrdersAsync();
 
-            try
+            var result = listOfOrders.Select(o => new GetOrderQueryResponse
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to get all Orders");
+                Id = o.Id,
+                UserId = o.UserId,
+                OrderDate = o.OrderDate
+            }).ToList();
 
-                var listOfOrders = await _orderRepository.GetOrdersAsync();
-
-                result = listOfOrders.Select(o => new GetOrderQueryResponse
-                {
-                    OrderDate = o.OrderDate
-                }).ToList();
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error getting Orders: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Orders retrieved successfully.");
             return result;
         }
     }
