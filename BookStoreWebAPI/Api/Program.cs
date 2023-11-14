@@ -24,7 +24,7 @@ builder.Services.AddTransient<IAuthorRepository, AuthorRepository>();
 builder.Services.AddTransient<IBookRepository, BookRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IOrderRepository, OrderRepository>();
-builder.Services.AddTransient<IOrderBookRepository, OrderBookRepository>();
+builder.Services.AddTransient<IOrderItemRepository, OrderItemRepository>();
 builder.Services.AddTransient<IPublisherRepository, PublisherRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 

@@ -1,6 +1,6 @@
 ﻿namespace Application.Query.GetUserOrders
 {
-    public class GetUserOrdersQueryResponse
+    public class GetUserOrderItemQueryResponse
     {
         public string Title { get; set; }
         public int Quantity { get; set; }

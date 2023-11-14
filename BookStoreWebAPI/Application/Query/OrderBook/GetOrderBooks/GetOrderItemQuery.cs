@@ -3,5 +3,5 @@ using MediatR;
 
 namespace Application.Query.GetOrderBooks
 {
-    public record GetOrderBooksQuery : IRequest<IEnumerable<GetOrderBookQueryResponse>>;
+    public record GetOrderItemQuery : IRequest<IEnumerable<GetOrderItemQueryResponse>>;
 }

@@ -42,7 +42,7 @@ namespace Infrastructure.Persistance.Repositories
             return user;
         }
 
-        public async Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id)
+        public async Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrderItemsById(int id)
         {
             var query = "SELECT B.Title, OB.Quantity, OB.Price, (OB.Quantity * OB.Price) AS TotalPrice " +
                         "FROM [Order] O " +
@@ -50,7 +50,7 @@ namespace Infrastructure.Persistance.Repositories
                         "JOIN Book B ON OB.BookId = B.Id " +
                         "WHERE O.UserId = @id " +
                         "ORDER BY B.Title";
-            var listOfOrders = await _dapperContext.Connection.QueryAsync<GetUserOrdersQueryResponse>(query, new { id }, _dapperContext.Transaction);
+            var listOfOrders = await _dapperContext.Connection.QueryAsync<GetUserOrderItemQueryResponse>(query, new { id }, _dapperContext.Transaction);
 
             return listOfOrders;
         }

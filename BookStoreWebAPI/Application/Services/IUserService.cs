@@ -10,7 +10,7 @@ namespace Application.Services
         Task AddAsync(CreateUserCommand request);
         Task<IEnumerable<GetUserQueryResponse>> GetUsersAsync();
         Task<GetUserQueryResponse> GetUserByIdAsync(int id);
-        Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id);
+        Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrdersById(int id);
         Task UpdateAsync(UpdateUserCommand request);
         Task DeleteByIdAsync(int id);
     }

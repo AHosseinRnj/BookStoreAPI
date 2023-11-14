@@ -12,8 +12,8 @@ namespace Infrastructure.Services
     {
         private readonly ILog _logger;
         private IUnitOfWork _unitOfWork;
-        private readonly IOrderBookRepository _orderBookRepository;
-        public OrderBookService(IUnitOfWork unitOfWork, IOrderBookRepository orderBookRepository)
+        private readonly IOrderItemRepository _orderBookRepository;
+        public OrderBookService(IUnitOfWork unitOfWork, IOrderItemRepository orderBookRepository)
         {
             _unitOfWork = unitOfWork;
             _orderBookRepository = orderBookRepository;
@@ -51,9 +51,9 @@ namespace Infrastructure.Services
             _logger.Info("OrderBook added successfully.");
         }
 
-        public async Task<IEnumerable<GetOrderBookQueryResponse>> GetOrderBooksAsync()
+        public async Task<IEnumerable<GetOrderItemQueryResponse>> GetOrderBooksAsync()
         {
-            IEnumerable<GetOrderBookQueryResponse> result;
+            IEnumerable<GetOrderItemQueryResponse> result;
 
             try
             {
@@ -62,7 +62,7 @@ namespace Infrastructure.Services
 
                 var orderBooks = await _orderBookRepository.GetOrderBooksAsync();
 
-                result = orderBooks.Select(ob => new GetOrderBookQueryResponse
+                result = orderBooks.Select(ob => new GetOrderItemQueryResponse
                 {
                     BookId = ob.BookId,
                     Price = ob.Price,

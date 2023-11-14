@@ -8,7 +8,7 @@ namespace Application.Repositpries
         Task AddAsync(User user);
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByIdAsync(int id);
-        Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id);
+        Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrderItemsById(int id);
         Task UpdateAsync(User user);
         Task DeleteByIdAsync(int id);
     }

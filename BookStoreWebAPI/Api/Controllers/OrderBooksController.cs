@@ -26,7 +26,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOrderBooks()
         {
-            var result = await _sender.Send(new GetOrderBooksQuery());
+            var result = await _sender.Send(new GetOrderItemQuery());
             if (result == null)
                 return NotFound();
 

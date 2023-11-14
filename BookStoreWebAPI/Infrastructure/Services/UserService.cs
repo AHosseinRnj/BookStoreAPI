@@ -110,9 +110,9 @@ namespace Infrastructure.Services
             return result;
         }
 
-        public async Task<IEnumerable<GetUserOrdersQueryResponse>> GetUserOrdersById(int id)
+        public async Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrdersById(int id)
         {
-            IEnumerable<GetUserOrdersQueryResponse> listOfOrders;
+            IEnumerable<GetUserOrderItemQueryResponse> listOfOrders;
 
             try
             {

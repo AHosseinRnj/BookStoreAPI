@@ -5,10 +5,10 @@ using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
-    public class OrderBookRepository : IOrderBookRepository
+    public class OrderItemRepository : IOrderItemRepository
     {
         private readonly DapperContext _dapperContext;
-        public OrderBookRepository(DapperContext dapperContext)
+        public OrderItemRepository(DapperContext dapperContext)
         {
             _dapperContext = dapperContext;
         }
@@ -26,7 +26,7 @@ namespace Infrastructure.Persistance.Repositories
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
         }
 
-        public async Task<IEnumerable<OrderItem>> GetOrderBooksAsync()
+        public async Task<IEnumerable<OrderItem>> GetOrderItemAsync()
         {
             var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
             var orderBooks = await _dapperContext.Connection.QueryAsync<OrderItem>(query, null, _dapperContext.Transaction);

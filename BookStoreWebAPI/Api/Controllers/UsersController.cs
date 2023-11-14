@@ -52,7 +52,7 @@ namespace Api.Controllers
         [HttpGet("{id}/Orders", Name = "GetUserOrders")]
         public async Task<IActionResult> GetUserOrders(int id)
         {
-            var result = await _sender.Send(new GetUserOrdersQuery(id));
+            var result = await _sender.Send(new GetUserOrderItemQuery(id));
 
             if (result == null)
                 return NotFound();

@@ -3,15 +3,15 @@ using MediatR;
 
 namespace Application.Query.GetUserOrders
 {
-    public class GetUserOrdersQueryHandler : IRequestHandler<GetUserOrdersQuery, IEnumerable<GetUserOrdersQueryResponse>>
+    public class GetUserOrderItemQueryHandler : IRequestHandler<GetUserOrderItemQuery, IEnumerable<GetUserOrderItemQueryResponse>>
     {
         private readonly IUserService _userService;
-        public GetUserOrdersQueryHandler(IUserService userService)
+        public GetUserOrderItemQueryHandler(IUserService userService)
         {
             _userService = userService;
         }
 
-        public async Task<IEnumerable<GetUserOrdersQueryResponse>> Handle(GetUserOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetUserOrderItemQueryResponse>> Handle(GetUserOrderItemQuery request, CancellationToken cancellationToken)
         {
             var listOfOrders = await _userService.GetUserOrdersById(request.id);
             return listOfOrders;

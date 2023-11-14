@@ -4,15 +4,15 @@ using MediatR;
 
 namespace Application.Query.GetOrderBooks
 {
-    public class GetOrderBooksQueryHandler : IRequestHandler<GetOrderBooksQuery, IEnumerable<GetOrderBookQueryResponse>>
+    public class GetOrderItemQueryHandler : IRequestHandler<GetOrderItemQuery, IEnumerable<GetOrderItemQueryResponse>>
     {
         private readonly IOrderBookService _orderBookService;
-        public GetOrderBooksQueryHandler(IOrderBookService orderBookService)
+        public GetOrderItemQueryHandler(IOrderBookService orderBookService)
         {
             _orderBookService = orderBookService;
         }
 
-        public async Task<IEnumerable<GetOrderBookQueryResponse>> Handle(GetOrderBooksQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<GetOrderItemQueryResponse>> Handle(GetOrderItemQuery request, CancellationToken cancellationToken)
         {
             var orderBooks = await _orderBookService.GetOrderBooksAsync();
             return orderBooks;

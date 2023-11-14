@@ -2,9 +2,9 @@
 
 namespace Application.Repositpries
 {
-    public interface IOrderBookRepository
+    public interface IOrderItemRepository
     {
         Task AddAsync(OrderItem orderBook);
-        Task<IEnumerable<OrderItem>> GetOrderBooksAsync();
+        Task<IEnumerable<OrderItem>> GetOrderItemAsync();
     }
 }
