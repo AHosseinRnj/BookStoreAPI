@@ -1,79 +1,21 @@
-﻿using Application;
-using Application.Commands.CreateUser;
-using Application.Commands.UpdateUser;
-using Application.Query.GetUser;
+﻿using Application.Query.GetUser;
 using Application.Query.GetUserOrders;
-using Application.Repositpries;
-using Application.Services;
-using Domain.Entities;
+using Application.Repositories;
+using Infrastructure.Services;
 using log4net;
 
-namespace Infrastructure.Services
+namespace Application.Services
 {
-    public class UserService : IUserService
+    public class UserReadService : IUserReadService
     {
         private readonly ILog _logger;
         private IDapperUnitOfWork _unitOfWork;
-        private readonly IUserRepository _userRepository;
-        public UserService(IDapperUnitOfWork unitOfWork, IUserRepository userRepository)
+        private readonly IUserReadRepository _userRepository;
+        public UserReadService(IDapperUnitOfWork unitOfWork, IUserReadRepository userRepository)
         {
             _unitOfWork = unitOfWork;
             _userRepository = userRepository;
-            _logger = LogManager.GetLogger(typeof(UserService));
-        }
-
-        public async Task AddAsync(CreateUserCommand request)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a User.");
-
-                var user = new User
-                {
-                    FirstName = request.FirstName,
-                    LastName = request.LastName,
-                    Address = request.Address,
-                    Phone = request.Phone
-                };
-
-                await _userRepository.AddAsync(user);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error adding a User: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("User added successfully.");
-        }
-
-        public async Task DeleteByIdAsync(int id)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a User by ID: " + id);
-
-                await _userRepository.DeleteByIdAsync(id);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error deleting a User: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("User deleted successfully.");
+            _logger = LogManager.GetLogger(typeof(UserReadService));
         }
 
         public async Task<GetUserQueryResponse> GetUserByIdAsync(int id)
@@ -165,37 +107,6 @@ namespace Infrastructure.Services
 
             _logger.Info("Users retrieved successfully.");
             return result;
-        }
-
-        public async Task UpdateAsync(UpdateUserCommand request)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update a User.");
-
-                var user = new User
-                {
-                    FirstName = request.User.FirstName,
-                    LastName = request.User.LastName,
-                    Address = request.User.Address,
-                    Phone = request.User.Phone
-                };
-
-                await _userRepository.UpdateAsync(user);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error updating a User: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("User updated successfully.");
         }
     }
 }

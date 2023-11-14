@@ -1,76 +1,21 @@
-﻿using Application;
-using Application.Commands.CreateCategory;
-using Application.Commands.UpdateCategory;
-using Application.Query.GetBook;
+﻿using Application.Query.GetBook;
 using Application.Query.GetCategory;
-using Application.Repositpries;
-using Application.Services;
-using Domain.Entities;
+using Application.Repositories;
+using Infrastructure.Services;
 using log4net;
 
-namespace Infrastructure.Services
+namespace Application.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryReadService : ICategoryReadService
     {
         private readonly ILog _logger;
         private IDapperUnitOfWork _unitOfWork;
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(IDapperUnitOfWork unitOfWork, ICategoryRepository categoryRepository)
+        private readonly ICategoryReadRepository _categoryRepository;
+        public CategoryReadService(IDapperUnitOfWork unitOfWork, ICategoryReadRepository categoryRepository)
         {
             _unitOfWork = unitOfWork;
             _categoryRepository = categoryRepository;
-            _logger = LogManager.GetLogger(typeof(CategoryService));
-        }
-
-        public async Task AddAsync(CreateCategoryCommand request)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a Category.");
-
-                var category = new Category
-                {
-                    Name = request.Name
-                };
-
-                await _categoryRepository.AddAsync(category);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error adding a Category: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category added successfully.");
-        }
-
-        public async Task DeleteByIdAsync(int id)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a Category by ID: " + id);
-
-                await _categoryRepository.DeleteByIdAsync(id);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error deleting a Category: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category deleted successfully.");
+            _logger = LogManager.GetLogger(typeof(CategoryReadService));
         }
 
         public async Task<IEnumerable<GetCategoryQueryResponse>> GetCategoriesAsync()
@@ -164,35 +109,6 @@ namespace Infrastructure.Services
 
             _logger.Info("Category retrieved successfully.");
             return result;
-        }
-
-        public async Task UpdateAsync(UpdateCategoryCommand request)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update a Category.");
-
-                var category = new Category
-                {
-                    Id = request.Id,
-                    Name = request.Category.Name
-                };
-
-                await _categoryRepository.UpdateAsync(category);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error updating a Category: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category updated successfully.");
         }
     }
 }

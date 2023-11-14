@@ -1,52 +1,20 @@
-﻿using Application;
-using Application.Command.CreateOrder;
-using Application.Query.GetOrder;
-using Application.Repositpries;
-using Application.Services;
-using Domain.Entities;
+﻿using Application.Query.GetOrder;
+using Application.Repositories;
+using Infrastructure.Services;
 using log4net;
 
-namespace Infrastructure.Services
+namespace Application.Services
 {
-    public class OrderService : IOrderService
+    public class OrderReadService : IOrderReadService
     {
         private readonly ILog _logger;
         private readonly IDapperUnitOfWork _unitOfWork;
-        private readonly IOrderRepository _orderRepository;
-        public OrderService(IDapperUnitOfWork unitOfWork, IOrderRepository orderRepository)
+        private readonly IOrderReadRepository _orderRepository;
+        public OrderReadService(IDapperUnitOfWork unitOfWork, IOrderReadRepository orderRepository)
         {
             _unitOfWork = unitOfWork;
             _orderRepository = orderRepository;
-            _logger = LogManager.GetLogger(typeof(OrderService));
-        }
-
-        public async Task AddAsync(CreateOrderCommand request)
-        {
-            try
-            {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add an Order.");
-
-                var order = new Order
-                {                   
-                    UserId = request.UserId,
-                    OrderDate = request.OrderDate
-                };
-
-                await _orderRepository.AddAsync(order);
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                _logger.Error("Error adding an Order: " + ex.Message, ex);
-                throw;
-            }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Order added successfully.");
+            _logger = LogManager.GetLogger(typeof(OrderReadService));
         }
 
         public async Task<GetOrderQueryResponse> GetOrderByIdAsync(int id)
