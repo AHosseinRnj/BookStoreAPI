@@ -1,6 +1,5 @@
 ﻿using Application.Query.GetOrder;
 using Application.Repositories;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services

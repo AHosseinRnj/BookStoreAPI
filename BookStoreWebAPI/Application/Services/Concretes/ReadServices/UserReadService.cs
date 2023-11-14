@@ -1,7 +1,6 @@
 ﻿using Application.Query.GetUser;
 using Application.Query.GetUserOrders;
 using Application.Repositories;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services

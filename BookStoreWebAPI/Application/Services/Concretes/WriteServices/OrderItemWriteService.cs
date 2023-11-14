@@ -1,7 +1,6 @@
 ﻿using Application.Commands.CreateOrderBook;
 using Application.Repositories;
 using Domain.Entities;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services

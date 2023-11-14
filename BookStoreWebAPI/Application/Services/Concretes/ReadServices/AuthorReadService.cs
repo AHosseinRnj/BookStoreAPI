@@ -1,7 +1,6 @@
 ﻿using Application.Query.Author.GetAuthor;
 using Application.Query.GetBook;
 using Application.Repositories;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services

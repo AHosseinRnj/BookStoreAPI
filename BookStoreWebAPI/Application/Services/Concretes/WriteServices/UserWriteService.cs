@@ -2,12 +2,11 @@
 using Application.Commands.UpdateUser;
 using Application.Repositories;
 using Domain.Entities;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services
 {
-    public class UserWriteService
+    public class UserWriteService : IUserWriteService
     {
         private readonly ILog _logger;
         private IDapperUnitOfWork _unitOfWork;

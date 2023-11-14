@@ -1,6 +1,5 @@
 ﻿using Application.Query.GetOrderBook;
 using Application.Repositories;
-using Infrastructure.Services;
 using log4net;
 
 namespace Application.Services
