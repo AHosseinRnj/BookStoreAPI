@@ -9,12 +9,10 @@ namespace Application.Services
     public class AuthorWriteService : IAuthorWriteService
     {
         private readonly ILog _logger;
-        private readonly IDapperUnitOfWork _unitOfWork;
-        private readonly IAuthorWriteRepository _authorRepository;
-        public AuthorWriteService(IDapperUnitOfWork unitOfWork, IAuthorWriteRepository authorRepository)
+        private readonly IEFUnitOfWork _unitOfWork;
+        public AuthorWriteService(IEFUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _authorRepository = authorRepository;
             _logger = LogManager.GetLogger(typeof(AuthorWriteService));
         }
 
@@ -22,9 +20,6 @@ namespace Application.Services
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add an Author.");
-
                 var author = new Author
                 {
                     FirstName = request.FirstName,
@@ -32,52 +27,34 @@ namespace Application.Services
                     Biography = request.Biography
                 };
 
-                await _authorRepository.AddAsync(author);
+                await _unitOfWork.AuthorRepository.AddAsync(author);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error adding an Author: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Author added successfully.");
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a Author by ID: " + id);
-
-                await _authorRepository.DeleteByIdAsync(id);
+                await _unitOfWork.AuthorRepository.DeleteByIdAsync(id);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error deleting an Author: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Author Deleted successfully.");
         }
 
         public async Task UpdateAsync(UpdateAuthorCommand request)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update an Author.");
-
                 var author = new Author
                 {
                     Id = request.Id,
@@ -86,20 +63,14 @@ namespace Application.Services
                     Biography = request.Author.Biography
                 };
 
-                await _authorRepository.UpdateAsync(author);
+                await _unitOfWork.AuthorRepository.UpdateAsync(author);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error updating an Author: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Author updated successfully.");
         }
     }
 }

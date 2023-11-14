@@ -9,12 +9,10 @@ namespace Application.Services
     public class BookWriteService : IBookWriteService
     {
         private readonly ILog _logger;
-        private readonly IDapperUnitOfWork _unitOfWork;
-        private readonly IBookWriteRepository _bookRepository;
-        public BookWriteService(IDapperUnitOfWork unitOfWork, IBookWriteRepository bookRepository)
+        private readonly IEFUnitOfWork _unitOfWork;
+        public BookWriteService(IEFUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _bookRepository = bookRepository;
             _logger = LogManager.GetLogger(typeof(BookWriteService));
         }
 
@@ -22,9 +20,6 @@ namespace Application.Services
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a book.");
-
                 var book = new Book
                 {
                     Title = request.Title,
@@ -36,52 +31,34 @@ namespace Application.Services
                     PublisherId = request.PublisherId,
                 };
 
-                await _bookRepository.AddAsync(book);
+                await _unitOfWork.BookRepository.AddAsync(book);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error adding a book: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Book added successfully.");
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a book by ID: " + id);
-
-                await _bookRepository.DeleteByIdAsync(id);
+                await _unitOfWork.BookRepository.DeleteByIdAsync(id);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a book: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Book deleted successfully.");
         }
 
         public async Task UpdateAsync(UpdateBookCommand request)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update a book.");
-
                 var book = new Book
                 {
                     Id = request.Id,
@@ -93,20 +70,14 @@ namespace Application.Services
                     Title = request.Book.Title
                 };
 
-                await _bookRepository.UpdateAsync(book);
+                await _unitOfWork.BookRepository.UpdateAsync(book);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error updating a book: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Book updated successfully.");
         }
     }
 }

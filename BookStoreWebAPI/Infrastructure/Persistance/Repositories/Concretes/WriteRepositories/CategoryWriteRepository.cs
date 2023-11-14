@@ -1,43 +1,32 @@
 ﻿using Application.Repositories;
-using Dapper;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
     public class CategoryWriteRepository : ICategoryWriteRepository
     {
-        private readonly DapperContext _dapperContext;
-        public CategoryWriteRepository(DapperContext dapperContext)
+        private readonly EFContext _context;
+        public CategoryWriteRepository(EFContext context)
         {
-            _dapperContext = dapperContext;
+            _context = context;
         }
 
         public async Task AddAsync(Category category)
         {
-            var query = "INSERT INTO Categories (id, name) VALUES (@id, @Name)";
-
-            var parameters = new DynamicParameters();
-            parameters.Add("id", category.Id, DbType.Int32);
-            parameters.Add("name", category.Name, DbType.String);
-
-            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
+            await _context.Categories.AddAsync(category);
         }
 
         public async Task DeleteByIdAsync(int id)
         {
-            var query = "DELETE FROM Categories WHERE id = @Id";
-            await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
+            var category = await _context.Categories.Where(c => c.Id == id).FirstAsync();
+            _context.Categories.Remove(category);
         }
 
         public async Task UpdateAsync(Category category)
         {
-            var query = "UPDATE Categories SET name = @Name WHERE Id = @Id";
-            var parameters = new DynamicParameters();
-            parameters.Add("Id", category.Id, DbType.Int32);
-            parameters.Add("name", category.Name, DbType.String);
-
-            await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
+            _context.Categories.Update(category);
         }
     }
 }

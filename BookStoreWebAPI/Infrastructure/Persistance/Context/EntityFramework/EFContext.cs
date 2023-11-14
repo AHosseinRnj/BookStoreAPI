@@ -11,6 +11,7 @@ namespace Infrastructure.Persistance
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Publisher> Publishers { get; set; }
+        public DbSet<User> Users { get; set; }
 
         public EFContext(DbContextOptions<EFContext> options) : base(options) { }
 

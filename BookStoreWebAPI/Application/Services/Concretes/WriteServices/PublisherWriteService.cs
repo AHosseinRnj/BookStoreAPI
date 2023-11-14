@@ -1,6 +1,5 @@
 ﻿using Application.Commands.CreatePublisher;
 using Application.Commands.UpdatePublisher;
-using Application.Repositories;
 using Domain.Entities;
 using log4net;
 
@@ -9,12 +8,10 @@ namespace Application.Services
     public class PublisherWriteService : IPublisherWriteService
     {
         private readonly ILog _logger;
-        private IDapperUnitOfWork _unitOfWork;
-        private readonly IPublisherWriteRepository _publisherRepository;
-        public PublisherWriteService(IDapperUnitOfWork unitOfWork, IPublisherWriteRepository publisherRepository)
+        private IEFUnitOfWork _unitOfWork;
+        public PublisherWriteService(IEFUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _publisherRepository = publisherRepository;
             _logger = LogManager.GetLogger(typeof(PublisherWriteService));
         }
 
@@ -22,61 +19,40 @@ namespace Application.Services
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a Publisher.");
-
                 var publisher = new Publisher
                 {
                     Name = request.Name,
                     Description = request.Description
                 };
 
-                await _publisherRepository.AddAsync(publisher);
+                await _unitOfWork.PublisherRepository.AddAsync(publisher);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error adding a Publisher: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher added successfully.");
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a Publisher by ID: " + id);
-
-                await _publisherRepository.DeleteByIdAsync(id);
+                await _unitOfWork.PublisherRepository.DeleteByIdAsync(id);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a Publisher: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher deleted successfully.");
         }
 
         public async Task UpdateAsync(UpdatePublisherCommand request)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update a Publisher.");
-
                 var publisher = new Publisher
                 {
                     Id = request.Id,
@@ -84,20 +60,14 @@ namespace Application.Services
                     Description = request.Publisher.Description
                 };
 
-                await _publisherRepository.UpdateAsync(publisher);
+                await _unitOfWork.PublisherRepository.UpdateAsync(publisher);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error updating a Publisher: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Publisher updated successfully.");
         }
     }
 }

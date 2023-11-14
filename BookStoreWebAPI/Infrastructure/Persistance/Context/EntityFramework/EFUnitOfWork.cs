@@ -1,8 +1,10 @@
-﻿using Application.Repositories;
+﻿using Application;
+using Application.Repositories;
+using Infrastructure.Persistance.Repositories;
 
 namespace Infrastructure.Persistance
 {
-    public class EFUnitOfWork
+    public class EFUnitOfWork : IEFUnitOfWork
     {
         private readonly EFContext _context;
 
@@ -18,13 +20,13 @@ namespace Infrastructure.Persistance
         {
             _context = context;
 
-            //BookRepository = new BookRepository(_context);
-            //AuthorRepository = new AuthorRepository(_context);
-            //CategoryRepository = new CategoryRepository(_context);
-            //OrderItemRepository = new OrderItemRepository(_context);
-            //OrderRepository = new OrderRepository(_context);
-            //PublisherRepository = new PublisherRepository(_context);
-            //UserRepository = new UserRepository(_context);
+            BookRepository = new BookWriteRepository(_context);
+            AuthorRepository = new AuthorWriteRepository(_context);
+            CategoryRepository = new CategoryWriteRepository(_context);
+            OrderItemRepository = new OrderItemWriteRepository(_context);
+            OrderRepository = new OrderWriteRepository(_context);
+            PublisherRepository = new PublisherWriteRepository(_context);
+            UserRepository = new UserWriteRepository(_context);
         }
 
         public void Complete()

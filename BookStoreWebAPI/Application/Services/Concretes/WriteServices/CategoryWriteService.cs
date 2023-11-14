@@ -9,12 +9,10 @@ namespace Application.Services
     public class CategoryWriteService : ICategoryWriteService
     {
         private readonly ILog _logger;
-        private IDapperUnitOfWork _unitOfWork;
-        private readonly ICategoryWriteRepository _categoryRepository;
-        public CategoryWriteService(IDapperUnitOfWork unitOfWork, ICategoryWriteRepository categoryRepository)
+        private IEFUnitOfWork _unitOfWork;
+        public CategoryWriteService(IEFUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _categoryRepository = categoryRepository;
             _logger = LogManager.GetLogger(typeof(CategoryWriteService));
         }
 
@@ -22,80 +20,53 @@ namespace Application.Services
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to add a Category.");
-
                 var category = new Category
                 {
                     Name = request.Name
                 };
 
-                await _categoryRepository.AddAsync(category);
+                await _unitOfWork.CategoryRepository.AddAsync(category);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error adding a Category: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category added successfully.");
         }
 
         public async Task DeleteByIdAsync(int id)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to delete a Category by ID: " + id);
-
-                await _categoryRepository.DeleteByIdAsync(id);
+                await _unitOfWork.CategoryRepository.DeleteByIdAsync(id);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error deleting a Category: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category deleted successfully.");
         }
 
         public async Task UpdateAsync(UpdateCategoryCommand request)
         {
             try
             {
-                _unitOfWork.BeginTransaction();
-                _logger.Info("Received a request to update a Category.");
-
                 var category = new Category
                 {
                     Id = request.Id,
                     Name = request.Category.Name
                 };
 
-                await _categoryRepository.UpdateAsync(category);
+                await _unitOfWork.CategoryRepository.UpdateAsync(category);
+                _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
-                _unitOfWork.Rollback();
                 _logger.Error("Error updating a Category: " + ex.Message, ex);
                 throw;
             }
-            finally
-            {
-                _unitOfWork.Commit();
-            }
-
-            _logger.Info("Category updated successfully.");
         }
     }
 }

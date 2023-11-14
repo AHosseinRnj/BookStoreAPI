@@ -8,7 +8,7 @@ namespace Application
         public IAuthorWriteRepository AuthorRepository { get; }
         public ICategoryWriteRepository CategoryRepository { get; }
         public IOrderItemWriteRepository OrderItemRepository { get; }
-        public IOrderItemWriteRepository OrderRepository { get; }
+        public IOrderWriteRepository OrderRepository { get; }
         public IPublisherWriteRepository PublisherRepository { get; }
         public IUserWriteRepository UserRepository { get; }
 
