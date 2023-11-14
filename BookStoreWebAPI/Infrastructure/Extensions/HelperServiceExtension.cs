@@ -1,10 +1,10 @@
-﻿using Application.Repositpries;
-using Application;
+﻿using Application;
 using Infrastructure.Persistance.Repositories;
 using Infrastructure.Persistance;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Application.Repositories;
 
 namespace Infrastructure.Extensions
 {
@@ -18,13 +18,27 @@ namespace Infrastructure.Extensions
 
             services.AddScoped<DapperContext>();
             services.AddScoped<IDapperUnitOfWork, DapperUnitOfWork>();
-            services.AddScoped<IAuthorRepository, AuthorRepository>();
-            services.AddScoped<IBookRepository, BookRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
-            services.AddScoped<IPublisherRepository, PublisherRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+
+            services.AddScoped<IAuthorWriteRepository, AuthorWriteRepository>();
+            services.AddScoped<IAuthorReadRepository, AuthorReadRepository>();
+
+            services.AddScoped<IBookWriteRepository, BookWriteRepository>();
+            services.AddScoped<IBookReadRepository, BookReadRepository>();
+
+            services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
+            services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
+
+            services.AddScoped<IOrderItemWriteRepository, OrderItemWriteRepository>();
+            services.AddScoped<IOrderItemReadRepository, OrderItemReadRepository>();
+
+            services.AddScoped<IOrderWriteRepository, OrderWriteRepository>();
+            services.AddScoped<IOrderReadRepository, OrderReadRepository>();
+
+            services.AddScoped<IPublisherWriteRepository, PublisherWriteRepository>();
+            services.AddScoped<IPublisherReadRepository, PublisherReadRepository>();
+
+            services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+            services.AddScoped<IUserReadRepository, UserReadRepository>();
         }
     }
 }

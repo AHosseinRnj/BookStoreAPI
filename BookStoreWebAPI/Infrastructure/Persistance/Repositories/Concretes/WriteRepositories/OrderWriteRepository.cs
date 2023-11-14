@@ -1,14 +1,14 @@
-﻿using Application.Repositpries;
+﻿using Application.Repositories;
 using Dapper;
 using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderWriteRepository : IOrderWriteRepository
     {
         private readonly DapperContext _dapperContext;
-        public OrderRepository(DapperContext dapperContext)
+        public OrderWriteRepository(DapperContext dapperContext)
         {
             _dapperContext = dapperContext;
         }
@@ -23,22 +23,6 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("userId", order.UserId, DbType.Int32);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
-        }
-
-        public async Task<Order> GetOrderByIdAsync(int id)
-        {
-            var query = "SELECT * FROM [Order] WHERE Id = @Id";
-            var order = await _dapperContext.Connection.QueryFirstAsync<Order>(query, new { id }, _dapperContext.Transaction);
-
-            return order;
-        }
-
-        public async Task<IEnumerable<Order>> GetOrdersAsync()
-        {
-            var query = "SELECT * FROM [Order]";
-            var listOfOrders = await _dapperContext.Connection.QueryAsync<Order>(query, null, _dapperContext.Transaction);
-
-            return listOfOrders;
         }
     }
 }

@@ -1,14 +1,14 @@
-﻿using Application.Repositpries;
+﻿using Application.Repositories;
 using Dapper;
 using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
-    public class OrderItemRepository : IOrderItemRepository
+    public class OrderItemWriteRepository : IOrderItemWriteRepository
     {
         private readonly DapperContext _dapperContext;
-        public OrderItemRepository(DapperContext dapperContext)
+        public OrderItemWriteRepository(DapperContext dapperContext)
         {
             _dapperContext = dapperContext;
         }
@@ -24,14 +24,6 @@ namespace Infrastructure.Persistance.Repositories
             parameters.Add("Price", orderBook.Price, DbType.Double);
 
             await _dapperContext.Connection.ExecuteAsync(query, parameters, _dapperContext.Transaction);
-        }
-
-        public async Task<IEnumerable<OrderItem>> GetOrderItemAsync()
-        {
-            var query = "SELECT OB.BookId, OB.Quantity, OB.Price FROM Book AS B JOIN OrderBook AS OB ON B.Id = OB.BookId";
-            var orderBooks = await _dapperContext.Connection.QueryAsync<OrderItem>(query, null, _dapperContext.Transaction);
-
-            return orderBooks;
         }
     }
 }

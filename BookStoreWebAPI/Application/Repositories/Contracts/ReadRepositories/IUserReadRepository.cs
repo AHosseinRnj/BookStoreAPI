@@ -1,15 +1,12 @@
 ﻿using Application.Query.GetUserOrders;
 using Domain.Entities;
 
-namespace Application.Repositpries
+namespace Application.Repositories
 {
-    public interface IUserRepository
+    public interface IUserReadRepository
     {
-        Task AddAsync(User user);
         Task<IEnumerable<User>> GetUsersAsync();
         Task<User> GetUserByIdAsync(int id);
         Task<IEnumerable<GetUserOrderItemQueryResponse>> GetUserOrderItemsById(int id);
-        Task UpdateAsync(User user);
-        Task DeleteByIdAsync(int id);
     }
 }

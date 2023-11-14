@@ -1,14 +1,11 @@
 ﻿using Domain.Entities;
 
-namespace Application.Repositpries
+namespace Application.Repositories
 {
-    public interface IAuthorRepository
+    public interface IAuthorReadRepository
     {
-        Task AddAsync(Author author);
         Task<IEnumerable<Author>> GetAuthorsAsync();
         Task<Author> GetAuthorById(int id);
         Task<IEnumerable<Book>> GetAuthorBooksAsync(int id);
-        Task UpdateAsync(Author author);
-        Task DeleteByIdAsync(int id);
     }
 }

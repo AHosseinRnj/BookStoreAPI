@@ -1,14 +1,11 @@
 ﻿using Domain.Entities;
 
-namespace Application.Repositpries
+namespace Application.Repositories
 {
-    public interface ICategoryRepository
+    public interface ICategoryReadRepository
     {
-        Task AddAsync(Category category);
         Task<IEnumerable<Category>> GetCategoriesAsync();
         Task<Category> GetCategoryByIdAsync(int id);
         Task<IEnumerable<Book>> GetCategoryBooksAsync(int id);
-        Task UpdateAsync(Category category);
-        Task DeleteByIdAsync(int id);
     }
 }

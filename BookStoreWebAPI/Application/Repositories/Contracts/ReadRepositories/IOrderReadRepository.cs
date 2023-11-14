@@ -1,10 +1,9 @@
 ﻿using Domain.Entities;
 
-namespace Application.Repositpries
+namespace Application.Repositories
 {
-    public interface IOrderRepository
+    public interface IOrderReadRepository
     {
-        Task AddAsync(Order order);
         Task<IEnumerable<Order>> GetOrdersAsync();
         Task<Order> GetOrderByIdAsync(int id);
     }

@@ -1,14 +1,14 @@
-﻿using Application.Repositpries;
+﻿using Application.Repositories;
 using Dapper;
 using Domain.Entities;
 using System.Data;
 
 namespace Infrastructure.Persistance.Repositories
 {
-    public class BookRepository : IBookRepository
+    public class BookWriteRepository : IBookWriteRepository
     {
         private readonly DapperContext _dapperContext;
-        public BookRepository(DapperContext dapperContext)
+        public BookWriteRepository(DapperContext dapperContext)
         {
             _dapperContext = dapperContext;
         }
@@ -34,23 +34,6 @@ namespace Infrastructure.Persistance.Repositories
         {
             var query = "DELETE FROM Book WHERE id = @Id";
             await _dapperContext.Connection.ExecuteAsync(query, new { id }, _dapperContext.Transaction);
-        }
-
-        public async Task<IEnumerable<Book>> GetBooksAsync()
-        {
-            var query = "SELECT * FROM Book";
-            var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, null, _dapperContext.Transaction);
-
-            return listOfBooks;
-        }
-
-
-        public async Task<Book> GetBookByIdAsync(int id)
-        {
-            var query = "SELECT * FROM Book WHERE id=@Id";
-            var book = await _dapperContext.Connection.QueryFirstAsync<Book>(query, new { id }, _dapperContext.Transaction);
-
-            return book;
         }
 
         public async Task UpdateAsync(Book book)
