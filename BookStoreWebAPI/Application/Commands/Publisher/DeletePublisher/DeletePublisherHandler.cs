@@ -5,8 +5,8 @@ namespace Application.Commands.DeletePublisher
 {
     public class DeletePublisherHandler : IRequestHandler<DeletePublisherCommand, Unit>
     {
-        private readonly IPublisherService _publisherService;
-        public DeletePublisherHandler(IPublisherService publisherService)
+        private readonly IPublisherWriteService _publisherService;
+        public DeletePublisherHandler(IPublisherWriteService publisherService)
         {
             _publisherService = publisherService;
         }

@@ -5,8 +5,8 @@ namespace Application.Commands.UpdateBook
 {
     public class UpdateAuthorHandler : IRequestHandler<UpdateBookCommand>
     {
-        private readonly IBookService _bookService;
-        public UpdateAuthorHandler(IBookService bookService)
+        private readonly IBookWriteService _bookService;
+        public UpdateAuthorHandler(IBookWriteService bookService)
         {
             _bookService = bookService;
         }

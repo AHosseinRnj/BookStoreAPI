@@ -5,8 +5,8 @@ namespace Application.Commands.CreatePublisher
 {
     public class CreatePublisherHandler : IRequestHandler<CreatePublisherCommand, Unit>
     {
-        private readonly IPublisherService _publisherService;
-        public CreatePublisherHandler(IPublisherService publisherService)
+        private readonly IPublisherWriteService _publisherService;
+        public CreatePublisherHandler(IPublisherWriteService publisherService)
         {
             _publisherService = publisherService;
         }

@@ -5,8 +5,8 @@ namespace Application.Commands.DeleteBook
 {
     public class DeleteBookHandler : IRequestHandler<DeleteBookCommand>
     {
-        private readonly IBookService _bookService;
-        public DeleteBookHandler(IBookService bookService)
+        private readonly IBookWriteService _bookService;
+        public DeleteBookHandler(IBookWriteService bookService)
         {
             _bookService = bookService;
         }

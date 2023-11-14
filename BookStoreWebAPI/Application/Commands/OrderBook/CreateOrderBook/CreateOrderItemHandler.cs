@@ -5,15 +5,15 @@ namespace Application.Commands.CreateOrderBook
 {
     public class CreateOrderItemHandler : IRequestHandler<CreateOrderItemCommand, Unit>
     {
-        private readonly IOrderItemService _orderBookService;
-        public CreateOrderItemHandler(IOrderItemService orderBookService)
+        private readonly IOrderItemWriteService _orderItemService;
+        public CreateOrderItemHandler(IOrderItemWriteService orderItemService)
         {
-            _orderBookService = orderBookService;
+            _orderItemService = orderItemService;
         }
 
         public async Task<Unit> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
         {
-            await _orderBookService.AddAsync(request);
+            await _orderItemService.AddAsync(request);
             return Unit.Value;
         }
     }

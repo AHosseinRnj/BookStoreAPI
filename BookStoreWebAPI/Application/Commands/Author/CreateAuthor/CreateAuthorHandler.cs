@@ -5,8 +5,8 @@ namespace Application.Commands.CreateAuthor
 {
     public class CreateAuthorHandler : IRequestHandler<CreateAuthorCommand, Unit>
     {
-        IAuthorService _authorService;
-        public CreateAuthorHandler(IAuthorService authorService)
+        IAuthorWriteService _authorService;
+        public CreateAuthorHandler(IAuthorWriteService authorService)
         {
             _authorService = authorService;
         }

@@ -5,8 +5,8 @@ namespace Application.Commands.CreateUser
 {
     public class CreateUserHandler : IRequestHandler<CreateUserCommand, Unit>
     {
-        private readonly IUserService _userService;
-        public CreateUserHandler(IUserService userService)
+        private readonly IUserWriteService _userService;
+        public CreateUserHandler(IUserWriteService userService)
         {
             _userService = userService;
         }

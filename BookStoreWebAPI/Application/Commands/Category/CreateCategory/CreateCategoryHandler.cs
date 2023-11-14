@@ -5,8 +5,8 @@ namespace Application.Commands.CreateCategory
 {
     public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Unit>
     {
-        private readonly ICategoryService _categoryService;
-        public CreateCategoryHandler(ICategoryService categoryRepository)
+        private readonly ICategoryWriteService _categoryService;
+        public CreateCategoryHandler(ICategoryWriteService categoryRepository)
         {
             _categoryService = categoryRepository;
         }

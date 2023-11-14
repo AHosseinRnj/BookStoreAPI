@@ -6,8 +6,8 @@ namespace Application.Commands.UpdateCategory
 {
     public class UpdateCategoryHandler : IRequestHandler<UpdateCategoryCommand, Unit>
     {
-        private readonly ICategoryService _categoryRepository;
-        public UpdateCategoryHandler(ICategoryService categoryRepository)
+        private readonly ICategoryWriteService _categoryRepository;
+        public UpdateCategoryHandler(ICategoryWriteService categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

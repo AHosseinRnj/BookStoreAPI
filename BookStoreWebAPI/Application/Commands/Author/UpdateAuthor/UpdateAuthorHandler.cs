@@ -5,8 +5,8 @@ namespace Application.Commands.UpdateAuthor
 {
     public class UpdateAuthorHandler : IRequestHandler<UpdateAuthorCommand>
     {
-        private readonly IAuthorService _authorService;
-        public UpdateAuthorHandler(IAuthorService authorService)
+        private readonly IAuthorWriteService _authorService;
+        public UpdateAuthorHandler(IAuthorWriteService authorService)
         {
             _authorService = authorService;
         }

@@ -5,8 +5,8 @@ namespace Application.Commands.UpdateUser
 {
     public class UpdateUserHandler : IRequestHandler<UpdateUserCommand, Unit>
     {
-        private readonly IUserService _userService;
-        public UpdateUserHandler(IUserService userService)
+        private readonly IUserWriteService _userService;
+        public UpdateUserHandler(IUserWriteService userService)
         {
             _userService = userService;
         }

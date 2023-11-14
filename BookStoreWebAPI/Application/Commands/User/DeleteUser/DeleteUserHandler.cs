@@ -5,8 +5,8 @@ namespace Application.Commands.DeleteUser
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUserCommand, Unit>
     {
-        private readonly IUserService _userService;
-        public DeleteUserHandler(IUserService userService)
+        private readonly IUserWriteService _userService;
+        public DeleteUserHandler(IUserWriteService userService)
         {
             _userService = userService;
         }

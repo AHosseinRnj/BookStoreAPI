@@ -5,8 +5,8 @@ namespace Application.Commands.CreateBook
 {
     public class CreateBookHandler : IRequestHandler<CreateBookCommand, Unit>
     {
-        private readonly IBookService _bookService;
-        public CreateBookHandler(IDapperUnitOfWork unitOfWork, IBookService bookService)
+        private readonly IBookWriteService _bookService;
+        public CreateBookHandler(IDapperUnitOfWork unitOfWork, IBookWriteService bookService)
         {
             _bookService = bookService;
         }

@@ -5,8 +5,8 @@ namespace Application.Commands.DeleteAuthor
 {
     public class DeleteAuthorHandler : IRequestHandler<DeleteAuthorCommand>
     {
-        private readonly IAuthorService _authorService;
-        public DeleteAuthorHandler(IAuthorService authorService)
+        private readonly IAuthorWriteService _authorService;
+        public DeleteAuthorHandler(IAuthorWriteService authorService)
         {
             _authorService = authorService;
         }

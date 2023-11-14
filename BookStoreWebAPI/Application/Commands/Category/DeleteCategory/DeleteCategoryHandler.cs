@@ -5,8 +5,8 @@ namespace Application.Commands.DeleteCategory
 {
     public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Unit>
     {
-        private readonly ICategoryService _categoryRepository;
-        public DeleteCategoryHandler(ICategoryService categoryRepository)
+        private readonly ICategoryWriteService _categoryRepository;
+        public DeleteCategoryHandler(ICategoryWriteService categoryRepository)
         {
             _categoryRepository = categoryRepository;
         }

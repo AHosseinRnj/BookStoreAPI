@@ -5,8 +5,8 @@ namespace Application.Commands.UpdatePublisher
 {
     public class UpdatePublisherHandler : IRequestHandler<UpdatePublisherCommand, Unit>
     {
-        private readonly IPublisherService _publisherService;
-        public UpdatePublisherHandler(IPublisherService publisherService)
+        private readonly IPublisherWriteService _publisherService;
+        public UpdatePublisherHandler(IPublisherWriteService publisherService)
         {
             _publisherService = publisherService;
         }
