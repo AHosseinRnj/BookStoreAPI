@@ -1,6 +1,5 @@
 ﻿using Application.Commands.CreateCategory;
 using Application.Commands.UpdateCategory;
-using Application.Repositories;
 using Domain.Entities;
 using log4net;
 
@@ -40,7 +39,7 @@ namespace Application.Services
             try
             {
                 await _unitOfWork.CategoryRepository.DeleteByIdAsync(id);
-                 await _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
