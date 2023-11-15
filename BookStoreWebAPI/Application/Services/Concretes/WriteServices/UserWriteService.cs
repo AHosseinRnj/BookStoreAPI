@@ -57,6 +57,7 @@ namespace Application.Services
             {
                 var user = new User
                 {
+                    Id = request.Id,
                     FirstName = request.User.FirstName,
                     LastName = request.User.LastName,
                     Address = request.User.Address,
