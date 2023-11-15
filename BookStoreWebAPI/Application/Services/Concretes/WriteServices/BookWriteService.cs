@@ -65,6 +65,7 @@ namespace Application.Services
                     AuthorId = request.Book.AuthorId,
                     CategoryId = request.Book.CategoryId,
                     PublisherId = request.Book.PublisherId,
+                    Quantity = request.Book.Quantity,
                     ISBN = request.Book.ISBN,
                     Price = request.Book.Price,
                     Title = request.Book.Title
