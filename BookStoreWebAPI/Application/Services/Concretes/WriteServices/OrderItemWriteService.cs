@@ -27,7 +27,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.OrderItemRepository.AddAsync(orderItem);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {

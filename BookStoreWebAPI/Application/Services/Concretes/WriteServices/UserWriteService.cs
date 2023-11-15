@@ -28,7 +28,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.UserRepository.AddAsync(user);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace Application.Services
             try
             {
                 await _unitOfWork.UserRepository.DeleteByIdAsync(id);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.UserRepository.UpdateAsync(user);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {

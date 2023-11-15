@@ -12,6 +12,6 @@ namespace Application
         public IPublisherWriteRepository PublisherRepository { get; }
         public IUserWriteRepository UserRepository { get; }
 
-        void Complete();
+        Task Complete();
     }
 }

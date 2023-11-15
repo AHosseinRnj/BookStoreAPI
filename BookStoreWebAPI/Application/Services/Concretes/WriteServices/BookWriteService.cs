@@ -32,7 +32,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.BookRepository.AddAsync(book);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -46,7 +46,7 @@ namespace Application.Services
             try
             {
                 await _unitOfWork.BookRepository.DeleteByIdAsync(id);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.BookRepository.UpdateAsync(book);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {

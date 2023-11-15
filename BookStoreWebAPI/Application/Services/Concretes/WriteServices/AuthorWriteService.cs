@@ -28,7 +28,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.AuthorRepository.AddAsync(author);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -42,7 +42,7 @@ namespace Application.Services
             try
             {
                 await _unitOfWork.AuthorRepository.DeleteByIdAsync(id);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.AuthorRepository.UpdateAsync(author);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {

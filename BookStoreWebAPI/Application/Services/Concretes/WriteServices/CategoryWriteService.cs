@@ -26,7 +26,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.CategoryRepository.AddAsync(category);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -40,7 +40,7 @@ namespace Application.Services
             try
             {
                 await _unitOfWork.CategoryRepository.DeleteByIdAsync(id);
-                _unitOfWork.Complete();
+                 await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace Application.Services
                 };
 
                 await _unitOfWork.CategoryRepository.UpdateAsync(category);
-                _unitOfWork.Complete();
+                await _unitOfWork.Complete();
             }
             catch (Exception ex)
             {
