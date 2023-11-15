@@ -22,7 +22,7 @@ namespace Infrastructure.Persistance.Repositories
 
         public async Task<IEnumerable<Book>> GetPublisherBooksAsync(int id)
         {
-            var query = "SELECT * FROM Books JOIN Publishers ON Books.PublisherId = Publishers.Id WHERE Publishers.Id = @id";
+            var query = "SELECT * FROM Books WHERE Books.PublisherId = @id";
             var listOfBooks = await _dapperContext.Connection.QueryAsync<Book>(query, new { id }, _dapperContext.Transaction);
 
             return listOfBooks;
