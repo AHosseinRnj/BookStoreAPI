@@ -49,7 +49,7 @@ namespace Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}/Orders", Name = "GetUserOrders")]
+        [HttpGet("{id}/Order/OrderItems/Books", Name = "GetUserOrders")]
         public async Task<IActionResult> GetUserOrders(int id)
         {
             var result = await _sender.Send(new GetUserOrderItemQuery(id));
