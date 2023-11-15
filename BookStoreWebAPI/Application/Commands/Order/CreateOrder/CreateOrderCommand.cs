@@ -1,6 +1,7 @@
-﻿using MediatR;
+﻿using Application.Commands.CreateOrder;
+using MediatR;
 
 namespace Application.Command.CreateOrder
 {
-    public record CreateOrderCommand(DateTime OrderDate, int UserId) : IRequest<Unit>;
+    public record CreateOrderCommand(CreateOrderRequest Order) : IRequest<Unit>;
 }

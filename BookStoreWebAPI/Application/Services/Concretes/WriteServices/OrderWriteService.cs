@@ -20,8 +20,15 @@ namespace Application.Services
             {
                 var order = new Order
                 {
-                    UserId = request.UserId,
-                    OrderDate = request.OrderDate,
+                    UserId = request.Order.UserId,
+                    OrderDate = request.Order.OrderDate,
+
+                    OrderItems = request.Order.Items.Select(item => new OrderItem
+                    {
+                        BookId = item.BookId,
+                        Quantity = item.Quantity,
+                        Price = item.Price
+                    }).ToList()
                 };
 
                 await _unitOfWork.OrderRepository.AddAsync(order);
